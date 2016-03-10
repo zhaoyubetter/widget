@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--自定义标题-->
+    <item name="tb_container" type="id" />
+    <item name="tb_back" type="id" />
+    <item name="tb_home" type="id" />
+    <item name="tb_page" type="id" />
+    <item name="tb_menu_container" type="id" />
+
+    <item name="container" type="id" />
+    <item name="pb_progress" type="id" />
+</resources>

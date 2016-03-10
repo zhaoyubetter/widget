@@ -1,0 +1,11 @@
+<resources>
+
+
+    <style name="Template">
+        <item name="textColor">@color/dark_gray</item>
+        <item name="fv_progressLayout">@layout/frame_progress</item>
+        <item name="fv_displayLayout">@layout/frame_display</item>
+        <item name="fv_errorLayout">@layout/frame_error</item>
+    </style>
+
+</resources>

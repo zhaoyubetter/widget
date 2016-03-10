@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.cz.library.widget.WaveImageView
+        android:id="@+id/iv_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@color/app_bg"
+        android:src="@color/colorPrimary"
+        auto:wv_borderColor="@color/colorPrimaryDark"
+        auto:wv_borderWidth="2dp"
+        auto:wv_label="@string/test"
+        auto:wv_padding="5dp"
+        auto:wv_textColor="@color/white"
+        auto:wv_textSize="15sp"
+        auto:wv_waveColor="@color/blue" />
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sl_wave_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        auto:sl_info="@string/wave_level" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="@string/start" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="@string/stop" />
+    </LinearLayout>
+
+</LinearLayout>

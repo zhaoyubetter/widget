@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <com.cz.library.widget.OptionGroup
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        auto:og_itemHorizontalPadding="12dp"
+        auto:og_itemTextSelector="@drawable/white_text_selector"
+        auto:og_itemVerticalPadding="8dp"
+        auto:og_items="@array/font_type" />
+
+    <com.cz.app.widget.RadioLayout
+        android:id="@+id/rl_edge_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal"
+        auto:rl_items="@array/edge_mode" />
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sl_horizontal_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:sl_info="@string/horizontal_padding" />
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sl_vertical_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:sl_info="@string/vertical_padding" />
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sl_round_radius"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:sl_info="@string/round_radius" />
+
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sl_divide_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:sl_info="@string/divide_color" />
+</LinearLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cz.library.widget.RadioGridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    auto:cl_fixRaw="4"
+    auto:cl_itemHeight="60dp"
+    auto:cl_itemWidth="60dp"
+    auto:cl_itemVerticalPadding="12dp"
+    auto:rl_buttonHorizontalPadding="12dp"
+    auto:rl_buttonVerticalPadding="12dp"
+    auto:rl_choiceMode="single_choice"
+    auto:rl_imageHeight="16dp"
+    auto:rl_imageWidth="16dp" />

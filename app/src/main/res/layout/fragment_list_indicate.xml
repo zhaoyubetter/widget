@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:clickable="true"
+    android:clipChildren="false"
+    android:orientation="horizontal">
+
+    <com.ldzs.recyclerlibrary.PullToRefreshRecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/li_indicator"
+        auto:pv_listDivide="@color/divide"
+        auto:pv_listDivideHeight="0.8dp"
+        auto:pv_refreshMode="none" />
+
+
+    <com.cz.library.widget.ListIndicator
+        android:id="@+id/li_indicator"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/app_bg"
+        auto:li_text_color="@color/white"
+        auto:li_type="rectangle" />
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rectangle_bg"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="50sp" />
+
+
+    <com.cz.app.widget.RadioLayout
+        android:id="@+id/rl_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/li_indicator"
+        android:gravity="right"
+        android:orientation="horizontal"
+        auto:rl_items="@array/indicate_type" />
+
+
+</RelativeLayout>

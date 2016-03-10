@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 单选控件组 -->
+    <declare-styleable name="OptionGroup">
+        <!-- 子条目分隔线宽度 -->
+        <attr name="og_divideSize" format="dimension" />
+        <attr name="og_roundRadius" format="dimension" />
+        <!-- 子条目分隔线颜色 -->
+        <attr name="og_divideColor" format="color" />
+        <attr name="og_itemHorizontalPadding" format="dimension" />
+        <attr name="og_itemVerticalPadding" format="dimension" />
+        <attr name="og_itemTextSize" format="dimension" />
+        <attr name="og_itemTextSelector" format="reference" />
+        <!-- 子条目数据 -->
+        <attr name="og_items" format="reference" />
+        <attr name="og_selectColor" format="color" />
+        <attr name="og_pressColor" format="color" />
+        <attr name="og_defaultColor" format="color" />
+        <!--条目的背景颜色-->
+        <attr name="og_backGroundColor" format="color" />
+        <!--条目的Margin-->
+        <attr name="og_itemMargin" format="dimension" />
+        <attr name="og_itemEdgeMode" format="enum">
+            <enum name="group_edge" value="0x00" />
+            <enum name="item_edge" value="0x01" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="ps_indicatorImage" format="color|reference" />
+        <attr name="ps_textColor" format="color" />
+        <attr name="ps_textSelectColor" format="color" />
+        <attr name="ps_itemHorizontalPadding" format="dimension" />
+        <attr name="ps_itemVerticalPadding" format="dimension" />
+        <attr name="ps_indicatorPadding" format="dimension" />
+        <attr name="ps_itemDivideColor" format="color" />
+        <attr name="ps_underlineColor" format="color" />
+        <attr name="ps_tabScale" format="float" />
+        <attr name="ps_expand" format="boolean" />
+        <attr name="ps_textSize" format="dimension" />
+
+    </declare-styleable>
+
+
+    <declare-styleable name="DivideLinearLayout">
+        <attr name="dl_itemDivide" format="boolean" />
+        <attr name="dl_divideColor" format="reference|color" />
+        <attr name="dl_dividePadding" format="dimension" />
+        <attr name="dl_divideSize" format="dimension" />
+        <attr name="dl_leftPadding" format="dimension" />
+        <attr name="dl_itemDivideSize" format="dimension" />
+        <attr name="dl_itemDivideColor" format="reference" />
+        <attr name="dl_itemDividePadding" format="dimension" />
+        <attr name="dl_divideGravity">
+            <flag name="left" value="0x01" />
+            <flag name="top" value="0x02" />
+            <flag name="right" value="0x04" />
+            <flag name="bottom" value="0x08" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="TitleBar">
+        <attr name="tb_displayHome" format="boolean" />
+        <attr name="tb_title" format="reference" />
+        <attr name="tb_icon" format="reference" />
+        <attr name="tb_textColor" format="reference|color" />
+        <attr name="tb_pageTextColor" format="reference|color" />
+        <attr name="tb_pageTitle" format="reference" />
+        <attr name="tb_pageTitleVisible" format="boolean" />
+        <attr name="tb_itemDivide" format="boolean" />
+        <attr name="tb_itemDivideColor" format="color" />
+        <attr name="tb_itemSelector" format="reference" />
+        <attr name="tb_iconFilter" format="color" />
+        <attr name="tb_titleMode" format="enum">
+            <enum name="wrap" value="0x00" />
+            <enum name="fill" value="0x01" />
+        </attr>
+        `
+    </declare-styleable>
+
+    <declare-styleable name="TemplateView">
+        <attr name="fv_progressLayout" format="string" />
+        <attr name="fv_displayLayout" format="reference" />
+        <attr name="fv_errorLayout" format="string" />
+        <attr name="fv_customLayout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchView">
+        <attr name="sv_strokeWidth" format="dimension" />
+        <attr name="sv_strokeColor" format="color" />
+        <attr name="sv_fillColor" format="color" />
+        <attr name="sv_unCheckWidth" format="dimension" />
+        <attr name="sv_unCheckColor" format="color" />
+        <attr name="sv_checkColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="LabelTextView">
+        <attr name="bv_label" format="reference" />
+        <attr name="bv_labelDefault" format="boolean" />
+        <attr name="bv_labelSize" format="dimension" />
+        <attr name="bv_labelColor" format="reference|color" />
+        <attr name="bv_labelPadding" format="dimension" />
+        <attr name="bv_labelGravity" format="enum">
+            <enum name="left" value="0x03" />
+            <enum name="top" value="0x30" />
+            <enum name="right" value="0x05" />
+            <enum name="bottom" value="0x50" />
+            <enum name="center" value="0x11" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ImageTextView">
+        <attr name="itv_image" format="reference" />
+        <attr name="itv_imageWidth" format="dimension" />
+        <attr name="itv_imageHeight" format="dimension" />
+        <attr name="itv_imagePadding" format="dimension" />
+        <attr name="itv_imageGravity" format="enum">
+            <enum name="left" value="0x03" />
+            <enum name="top" value="0x30" />
+            <enum name="right" value="0x05" />
+            <enum name="bottom" value="0x50" />
+            <enum name="center" value="0x11" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TabLinearLayout">
+        <attr name="tll_tabWidth" format="dimension" />
+        <attr name="tll_tabHeight" format="dimension" />
+        <attr name="tll_tabImage" format="reference" />
+        <attr name="tll_horizontalPadding" format="dimension" />
+        <attr name="tll_verticalPadding" format="dimension" />
+        <attr name="tll_tabMode" format="enum">
+            <enum name="strip" value="0x00" />
+            <enum name="clip" value="0x01" />
+            <enum name="full" value="0x02" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TabHost">
+        <attr name="th_color" format="color" />
+        <attr name="th_selectColor" format="color" />
+        <attr name="th_textSize" format="dimension" />
+        <attr name="th_verticalPadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="TextMenuLayout">
+        <attr name="tml_textColor" format="reference" />
+        <attr name="tml_textSize" format="dimension" />
+        <attr name="tml_menu" format="reference" />
+    </declare-styleable>
+
+
+    <declare-styleable name="RadioGridLayout">
+        <attr name="rl_buttonImage" format="reference" />
+        <attr name="rl_imageWidth" format="dimension" />
+        <attr name="rl_imageHeight" format="dimension" />
+        <attr name="rl_buttonHorizontalPadding" format="dimension" />
+        <attr name="rl_buttonVerticalPadding" format="dimension" />
+        <attr name="rl_imageGravity">
+            <flag name="left" value="0x03" />
+            <flag name="top" value="0x30" />
+            <flag name="right" value="0x05" />
+            <flag name="bottom" value="0x50" />
+        </attr>
+        <attr name="rl_choiceMode" format="enum">
+            <enum name="single_choice" value="0" />
+            <enum name="more_choice" value="1" />
+            <enum name="rectangle_choice" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="CenterTextView">
+        <attr name="cv_center" format="boolean" />
+        <attr name="cv_drawableWidth" format="dimension" />
+        <attr name="cv_drawableHeight" format="dimension" />
+        <attr name="cv_sizeMode">
+            <flag name="none" value="0x00" />
+            <flag name="left" value="0x01" />
+            <flag name="top" value="0x02" />
+            <flag name="right" value="0x04" />
+            <flag name="bottom" value="0x08" />
+            <flag name="all" value="0xf" />
+        </attr>
+        <attr name="cv_drawableMode" format="enum">
+            <enum name="left" value="0x00" />
+            <enum name="top" value="0x01" />
+            <enum name="right" value="0x02" />
+            <enum name="bottom" value="0x03" />
+            <enum name="all" value="0x04" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="IndicateView">
+        <attr name="iv_textSize" format="dimension" />
+        <attr name="iv_textColor" format="color" />
+        <attr name="iv_indicatePadding" format="dimension" />
+        <attr name="iv_dividerColor" format="color" />
+        <attr name="iv_dividerSize" format="dimension" />
+        <attr name="iv_indicateImage" format="reference" />
+        <attr name="iv_indicateSize" format="dimension" />
+        <attr name="iv_indicateBackground" format="color" />
+        <attr name="iv_indicateGravity" format="enum">
+            <enum name="top" value="0x00" />
+            <enum name="center" value="0x01" />
+            <enum name="bottom" value="0x02" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ViewPagerIndicator">
+        <attr name="vi_circle_type" format="enum">
+            <enum name="circle_move" value="0" />
+            <enum name="circle_rate" value="1" />
+            <enum name="circle_size" value="2" />
+        </attr>
+        <attr name="vi_circle_gravity" format="enum">
+            <enum name="center" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <attr name="vi_radius" format="dimension" />
+        <attr name="vi_width" format="dimension" />
+        <attr name="vi_scale" format="dimension" />
+        <attr name="vi_padding" format="dimension" />
+        <attr name="vi_default_color" format="reference" />
+        <attr name="vi_anim_color" format="reference" />
+        <attr name="vi_is_3d" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="RecyclerTabLayout">
+        <attr name="rtl_tabIndicatorColor" format="color" />
+        <attr name="rtl_tabSelectColor" format="color" />
+        <attr name="rtl_tabDefaultColor" format="color" />
+        <attr name="rtl_tabIndicatorHeight" format="dimension" />
+        <attr name="rtl_tabIndicatorPadding" format="dimension" />
+        <attr name="rtl_tabScale" format="float" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ProgressBar">
+        <attr name="pb_color" format="color" />
+        <attr name="pb_backGroundColor" format="color" />
+        <attr name="pb_strokeWidth" format="dimension" />
+        <attr name="pb_fillet" format="dimension" />
+        <attr name="pb_max" format="integer" />
+        <attr name="pb_progress" format="integer" />
+        <attr name="pb_duration" format="integer" />
+
+        <attr name="pb_mode" format="enum">
+            <enum name="setProgress" value="0x00" />
+            <enum name="auto" value="0x01" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="FlagTextView">
+        <attr name="fv_gravity" format="enum">
+            <enum name="leftTop" value="0x00" />
+            <enum name="leftBottom" value="0x01" />
+            <enum name="rightTop" value="0x02" />
+            <enum name="rightBottom" value="0x03" />
+        </attr>
+        <attr name="fv_textGravity" format="enum">
+            <enum name="center" value="0x00" />
+            <enum name="left" value="0x01" />
+            <enum name="right" value="0x02" />
+        </attr>
+        <attr name="fv_mode" format="enum">
+            <enum name="periphery" value="0x00" />
+            <enum name="withText" value="0x01" />
+        </attr>
+        <attr name="fv_flagWidthPadding" format="dimension" />
+        <attr name="fv_flagHeightPadding" format="dimension" />
+        <attr name="fv_flagRes" format="reference" />
+        <attr name="fv_flagWidth" format="dimension" />
+        <attr name="fv_flagHeight" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchView">
+        <attr name="sv_hintIcon" format="reference" />
+        <attr name="sv_hintIconShow" format="boolean" />
+        <attr name="sv_deleteIcon" format="reference" />
+        <attr name="sv_deleteHintIcon" format="reference" />
+        <attr name="sv_deleteBackground" format="reference" />
+        <attr name="sv_hintText" format="string" />
+        <attr name="sv_hintColor" format="reference" />
+        <attr name="sv_textColor" format="color" />
+        <attr name="sv_textSize" format="dimension" />
+        <attr name="sv_editPadding" format="dimension" />
+        <attr name="sv_submitShow" format="boolean" />
+        <attr name="sv_iconFilter" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="LabelLinearLayout">
+        <attr name="ll_textSize" format="dimension" />
+        <attr name="ll_textColor" format="color" />
+        <attr name="ll_horizontalPadding" format="dimension" />
+        <attr name="ll_verticalPadding" format="dimension" />
+        <attr name="ll_gravity">
+            <flag name="left" value="0x01" />
+            <flag name="top" value="0x02" />
+            <flag name="right" value="0x04" />
+            <flag name="bottom" value="0x08" />
+            <flag name="center" value="0x10" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CenterGridLayout">
+        <attr name="cl_fixRaw" format="integer" />
+        <attr name="cl_itemWidth" format="dimension" />
+        <attr name="cl_itemHeight" format="dimension" />
+        <attr name="cl_itemHorizontalPadding" format="dimension" />
+        <attr name="cl_itemVerticalPadding" format="dimension" />
+        <attr name="cl_itemSizeMode" format="enum">
+            <enum name="item_width" value="0x00" />
+            <enum name="horizontal_padding" value="0x01" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="WaveImageView">
+        <attr name="wv_padding" format="dimension" />
+        <attr name="wv_borderColor" format="color" />
+        <attr name="wv_borderWidth" format="dimension" />
+        <attr name="wv_waveRadius" format="float" />
+        <attr name="wv_waveColor" format="color" />
+        <attr name="wv_label" format="reference" />
+        <attr name="wv_textColor" format="color" />
+        <attr name="wv_textSize" format="dimension" />
+        <attr name="wv_maskColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ListIndicator">
+        <attr name="li_type" format="enum">
+            <enum name="none" value="0x00" />
+            <enum name="rectangle" value="0x01" />
+            <enum name="circle" value="0x02" />
+            <enum name="scale_circle" value="0x03" />
+        </attr>
+        <attr name="li_color" format="color" />
+        <attr name="li_text_color" format="color" />
+        <attr name="li_select_color" format="color" />
+        <attr name="li_text_size" format="dimension" />
+        <attr name="li_textScale" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="BorderLabelTextView">
+        <attr name="bt_textColor" format="color" />
+        <attr name="bt_textSize" format="dimension" />
+        <attr name="bt_leftLabelPadding" format="dimension" />
+        <attr name="bt_borderColor" format="color" />
+        <attr name="bt_borderSize" format="dimension" />
+        <attr name="bt_label" format="string|reference" />
+        <attr name="bt_borderPadding" format="dimension" />
+        <attr name="bt_labelPadding" format="dimension" />
+    </declare-styleable>
+
+
+    <declare-styleable name="SignView">
+        <attr name="sv_itemSelector" format="reference" />
+        <attr name="sv_rateColor" format="color" />
+        <attr name="sv_rateDefaultColor" format="color" />
+        <attr name="sv_rateWidth" format="dimension" />
+        <attr name="sv_itemColor" format="color" />
+        <attr name="sv_itemDefaultColor" format="color" />
+        <attr name="sv_itemWidth" format="dimension" />
+        <attr name="sv_itemPadding" format="dimension" />
+        <attr name="sv_itemSize" format="dimension" />
+        <attr name="sv_itemDate" format="reference" />
+        <attr name="sv_itemTextSize" format="dimension" />
+        <attr name="sv_itemTextColor" format="color" />
+    </declare-styleable>
+
+
+    <declare-styleable name="BadgerTextView">
+        <attr name="lt_badgerDrawable" format="reference" />
+        <attr name="lt_badgerWidth" format="dimension" />
+        <attr name="lt_badgerHeight" format="dimension" />
+        <attr name="lt_badgerText" format="string" />
+        <attr name="lt_textColor" format="color" />
+        <attr name="lt_textSize" format="dimension" />
+        <attr name="lt_horizontalPadding" format="dimension" />
+        <attr name="lt_verticalPadding" format="dimension" />
+        <attr name="lt_textLeftPadding" format="dimension" />
+        <attr name="lt_textRightPadding" format="dimension" />
+        <attr name="lt_textTopPadding" format="dimension" />
+        <attr name="lt_textBottomPadding" format="dimension" />
+        <attr name="lt_textPadding" format="dimension" />
+        <attr name="lt_badgerGravity" format="enum">
+            <enum name="l_t" value="0x00" />
+            <enum name="r_t" value="0x01" />
+            <enum name="l_b" value="0x02" />
+            <enum name="r_b" value="0x03" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="WidgetAttr">
+        <attr name="textColor" format="color" />
+        <attr name="template" format="reference" />
+    </declare-styleable>
+
+</resources>

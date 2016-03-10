@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.cz.app.widget.FrameView
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.ldzs.recyclerlibrary.PullToRefreshRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            auto:pv_listDivide="@color/divide"
+            auto:pv_listDivideHeight="@dimen/divideSize"
+            auto:pv_refreshMode="none" />
+
+
+    </com.cz.app.widget.FrameView>
+
+    <com.cz.app.widget.RadioLayout
+        android:id="@+id/rl_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:orientation="horizontal"
+        auto:rl_items="@array/frame" />
+</FrameLayout>

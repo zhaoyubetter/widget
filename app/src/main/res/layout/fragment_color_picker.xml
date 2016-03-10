@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.cz.library.widget.RadioGridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:cl_itemHeight="30dp"
+        auto:cl_itemHorizontalPadding="12dp"
+        auto:cl_itemVerticalPadding="4dp"
+        auto:rl_buttonHorizontalPadding="12dp"
+        auto:rl_buttonImage="@drawable/stroke_red_oval"
+        auto:rl_buttonVerticalPadding="12dp"
+        auto:rl_choiceMode="single_choice"
+        auto:rl_imageGravity="right|bottom"
+        auto:rl_imageHeight="16dp"
+        auto:rl_imageWidth="16dp" />
+</LinearLayout>
