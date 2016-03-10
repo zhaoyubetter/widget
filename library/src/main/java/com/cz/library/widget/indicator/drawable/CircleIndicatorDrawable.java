@@ -16,9 +16,8 @@ import com.cz.library.widget.indicator.ViewPagerIndicator;
 
 /**
  * 圆形指示器drawable
- *
- * @author momo
- * @Date 2015/2/9
+ * <p/>
+ * Created by cz on 15/2/9.
  */
 public final class CircleIndicatorDrawable extends ShapeDrawable implements Indicatorable {
     // 移动类型

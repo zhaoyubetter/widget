@@ -19,9 +19,8 @@ import java.util.ArrayList;
 
 /**
  * ViewPagerIndicator,viewpager滑动指示器
- *
- * @author momo
- * @Date 2015/2/9
+ * <p/>
+ * Created by cz on 15/2/9.
  */
 public final class ViewPagerIndicator extends View implements OnPageChangeListener {
     // 方向

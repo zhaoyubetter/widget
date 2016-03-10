@@ -19,10 +19,10 @@ import com.cz.library.R;
 /**
  * TextView封装类,用于CompoundDrawable与文字同时居中,以及针对CompoundDrawable的尺寸限定
  * 实现思路,架空textView的text以及CompoundDrawable,自己绘制方位,控制大小
- * <p>
+ * <p/>
  * Created by cz on 2014/6/3
- *
- * @update 2015/11/10;重写思路, 架空textView的text以及CompoundDrawable, 自己绘制方位, 控制大小
+ * <p/>
+ * update 2015/11/10;重写思路, 架空textView的text以及CompoundDrawable, 自己绘制方位, 控制大小
  */
 public class CenterTextView extends TextView {
     //sizeMode Drawable尺寸大小控制

@@ -20,9 +20,8 @@ import com.cz.library.util.Utils;
 
 /**
  * 显示增加一端显示文字的textView
- *
- * @author momo
- * @Date 2014/9/3
+ * <p/>
+ * Created by cz on 14/9/3.
  * like:
  * ------------------
  * |TEXT   otherText|
