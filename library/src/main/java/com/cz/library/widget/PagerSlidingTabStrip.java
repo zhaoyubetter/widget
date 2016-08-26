@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 
 import com.cz.library.R;
 import com.cz.library.util.Utils;
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * 更改自github#PagerSlidingTabStrip，配合viewpager使用。
@@ -215,8 +215,8 @@ public class PagerSlidingTabStrip extends HorizontalScrollView implements ViewPa
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(isExpand ? width : LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
             params.gravity = Gravity.CENTER;
             if (0 == i) {
-                ViewHelper.setScaleX(tab, 1f + scale);
-                ViewHelper.setScaleY(tab, 1f + scale);
+                ViewCompat.setScaleX(tab, 1f + scale);
+                ViewCompat.setScaleY(tab, 1f + scale);
             }
             tabsContainer.addView(tab, params);
         }
@@ -306,14 +306,14 @@ public class PagerSlidingTabStrip extends HorizontalScrollView implements ViewPa
             textView = (TextView) tabsContainer.getChildAt(position);
             if (null != lastView) {
                 // 设置缩小
-                ViewHelper.setScaleX(lastView, 1f + positionOffset * scale);
-                ViewHelper.setScaleY(lastView, 1f + positionOffset * scale);
+                ViewCompat.setScaleX(lastView, 1f + positionOffset * scale);
+                ViewCompat.setScaleY(lastView, 1f + positionOffset * scale);
                 // 颜色回退
                 lastView.setTextColor(evaluate(1f - positionOffset, textSelectColor, textColor));
             }
             // 设置控件放大
-            ViewHelper.setScaleX(textView, 1f + ((1f - positionOffset) * scale));
-            ViewHelper.setScaleY(textView, 1f + ((1f - positionOffset) * scale));
+            ViewCompat.setScaleX(textView, 1f + ((1f - positionOffset) * scale));
+            ViewCompat.setScaleY(textView, 1f + ((1f - positionOffset) * scale));
             // 颜色选中
             textView.setTextColor(evaluate(1f - positionOffset, textColor, textSelectColor));
         }

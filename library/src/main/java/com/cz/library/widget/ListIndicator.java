@@ -11,11 +11,12 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.cz.library.R;
 import com.cz.library.util.Utils;
-import com.nineoldandroids.animation.ValueAnimator;
+
+import xyqb.library.AnimatorCompat;
+import xyqb.library.AnimatorUpdateListener;
 
 
 /**
@@ -317,17 +318,15 @@ public class ListIndicator extends View {
      * @param index
      */
     private void startAnim(final int index, final boolean reversal) {
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1.0f);
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        AnimatorCompat.Animator animator = AnimatorCompat.ofFloat(1.0f);
+        animator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float fraction = valueAnimator.getAnimatedFraction();
+            public void onAnimationUpdate(AnimatorCompat.Animator animation, float fraction) {
                 fractions[index] = reversal ? 1 - fraction : fraction;
                 invalidate();
             }
         });
-        valueAnimator.start();
+        animator.start();
     }
 
     /**

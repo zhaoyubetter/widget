@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.cz.library.widget.WaveImageView
+   <!-- <com.cz.library.widget.WaveImageView
         android:id="@+id/iv_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -20,7 +20,7 @@
         auto:wv_padding="5dp"
         auto:wv_textColor="@color/white"
         auto:wv_textSize="15sp"
-        auto:wv_waveColor="@color/blue" />
+        auto:wv_waveColor="@color/blue" />-->
 
     <com.cz.app.widget.SeekLayout
         android:id="@+id/sl_wave_level"

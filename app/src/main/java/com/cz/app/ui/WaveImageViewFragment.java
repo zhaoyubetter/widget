@@ -6,11 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import com.cz.app.R;
-import com.cz.app.widget.SeekLayout;
-import com.cz.library.widget.WaveImageView;
 
 /**
  * Created by cz on 16/3/9.
@@ -25,7 +22,7 @@ public class WaveImageViewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final WaveImageView imageView = (WaveImageView) view.findViewById(R.id.iv_image);
+        /*final WaveImageView imageView = (WaveImageView) view.findViewById(R.id.iv_image);
         imageView.setImageResource(R.mipmap.label_play);
         SeekLayout levelSeek = (SeekLayout) view.findViewById(R.id.sl_wave_level);
         levelSeek.setOnSeekProgressChangeListener(new SeekLayout.OnSeekProgressChangeListener() {
@@ -45,6 +42,6 @@ public class WaveImageViewFragment extends Fragment {
             public void onClick(View v) {
                 imageView.toggleWave();
             }
-        });
+        });*/
     }
 }

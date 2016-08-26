@@ -7,7 +7,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -138,25 +137,19 @@ public class TemplateView extends RelativeLayout {
             if (null != frameAction) {
                 removeCallbacks(frameAction);
             }
-            frameAction = new Runnable() {
-                @Override
-                public void run() {
-                    Log.e(TAG, "frame:" + frame + " lastFrame:" + lastFrame);
-                    View showView = getChildAt(frame);
-                    View closeView = getChildAt(lastFrame);
-                    closeView.setVisibility(View.GONE);//隐藏
-                    showView.setVisibility(View.VISIBLE);
-                    if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
-                        ViewCompat.setAlpha(showView, 0f);
-                        ViewCompat.animate(showView).alpha(1f);
-                    } else {
-                        showView.clearAnimation();
-                        closeView.clearAnimation();
-                    }
-                    lastFrame = frame;
-                }
-            };
-            postDelayed(frameAction, delayTime);
+            View showView = getChildAt(frame);
+            View closeView = getChildAt(lastFrame);
+            closeView.setVisibility(View.GONE);//隐藏
+            showView.setVisibility(View.VISIBLE);
+            if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
+                ViewCompat.setAlpha(showView, 0f);
+                ViewCompat.animate(showView).alpha(1f);
+            } else {
+                showView.clearAnimation();
+                closeView.clearAnimation();
+            }
+            lastFrame = frame;
+
         }
     }
 
