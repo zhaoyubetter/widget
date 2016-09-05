@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
@@ -18,18 +18,18 @@ import com.cz.library.R;
  * Created by cz on 2014/8/8
  */
 public class DivideRelativeLayout extends RelativeLayout {
-    public static final int NONE = 0x00;
-    public static final int LEFT = 0x01;
-    public static final int TOP = 0x02;
-    public static final int RIGHT = 0x04;
-    public static final int BOTTOM = 0x08;
+    public static final int NONE = 0x01;
+    public static final int LEFT = 0x02;
+    public static final int TOP = 0x04;
+    public static final int RIGHT = 0x08;
+    public static final int BOTTOM = 0x10;
 
-    private float strokeWidth;
+    private Drawable divideDrawable;
+    private int strokeWidth;
     private int divideColor;
     private int dividePadding;
     private int leftPadding;//左下单独边距,项目内这块需要比较多大
     private int gravity;
-    private Paint paint;
 
     @IntDef({NONE, LEFT, TOP, RIGHT, BOTTOM})
     public @interface DivideGravity {
@@ -37,7 +37,6 @@ public class DivideRelativeLayout extends RelativeLayout {
 
     public DivideRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        paint = new Paint();
         setWillNotDraw(false);
         initAttribute(context, attrs);
     }
@@ -54,17 +53,22 @@ public class DivideRelativeLayout extends RelativeLayout {
      */
     private void initAttribute(Context context, AttributeSet attrs) {
         Resources resources = getResources();
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DivideLinearLayout);
-        gravity = (a.getInt(R.styleable.DivideLinearLayout_dl_divideGravity, NONE));
-        setStrokeWidth(a.getDimension(R.styleable.DivideLinearLayout_dl_divideSize, resources.getDimension(R.dimen.divideSize)));
-        setDivideColor(a.getColor(R.styleable.DivideLinearLayout_dl_divideColor, resources.getColor(R.color.divide)));
-        setDividePadding((int) a.getDimension(R.styleable.DivideLinearLayout_dl_dividePadding, 0f));
-        setLeftPadding((int) a.getDimension(R.styleable.DivideLinearLayout_dl_leftPadding, 0f));
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DivideRelativeLayout);
+        setDivideGravityInner(a.getInt(R.styleable.DivideRelativeLayout_dr_divideGravity, NONE));
+        setStrokeWidth(a.getDimension(R.styleable.DivideRelativeLayout_dr_divideSize, resources.getDimension(R.dimen.divideSize)));
+        setDivideColor(a.getColor(R.styleable.DivideRelativeLayout_dr_divideDrawable, resources.getColor(R.color.divide)));
+        setDividePadding(a.getDimension(R.styleable.DivideRelativeLayout_dr_dividePadding, 0f));
+        setLeftPadding(a.getDimension(R.styleable.DivideRelativeLayout_dr_leftPadding, 0f));
         a.recycle();
     }
 
 
+
     public void setDivideGravity(@DivideGravity int gravity) {
+        setDivideGravityInner(gravity);
+    }
+
+    public void setDivideGravityInner(int gravity) {
         this.gravity = gravity;
         invalidate();
     }
@@ -75,7 +79,7 @@ public class DivideRelativeLayout extends RelativeLayout {
      * @param strokeWidth
      */
     public void setStrokeWidth(float strokeWidth) {
-        this.strokeWidth = strokeWidth;
+        this.strokeWidth = Math.round(strokeWidth);
         invalidate();
     }
 
@@ -90,8 +94,8 @@ public class DivideRelativeLayout extends RelativeLayout {
      *
      * @param padding
      */
-    public void setDividePadding(int padding) {
-        this.dividePadding = padding;
+    public void setDividePadding(float padding) {
+        this.dividePadding = Math.round(padding);
         invalidate();
     }
 
@@ -100,8 +104,8 @@ public class DivideRelativeLayout extends RelativeLayout {
      *
      * @param padding
      */
-    private void setLeftPadding(int padding) {
-        this.leftPadding = padding;
+    private void setLeftPadding(float padding) {
+        this.leftPadding = Math.round(padding);
         invalidate();
     }
 
@@ -120,23 +124,25 @@ public class DivideRelativeLayout extends RelativeLayout {
     }
 
     private void drawDivide(Canvas canvas, boolean drawLeft, boolean drawTop, boolean drawRight, boolean drawBottom) {
-        paint.reset();
-        paint.setColor(divideColor);
+        if(null==divideDrawable)return;
         int width = getWidth();
         int height = getHeight();
-        float interval = strokeWidth / 2;
-        paint.setStrokeWidth(strokeWidth);
+
         if (drawLeft) {
-            canvas.drawLine(interval, dividePadding, interval, height - dividePadding, paint);
+            divideDrawable.setBounds(0, dividePadding, strokeWidth, height - dividePadding);
+            divideDrawable.draw(canvas);
         }
         if (drawTop) {
-            canvas.drawLine(dividePadding, interval, width - dividePadding, interval, paint);
+            divideDrawable.setBounds(dividePadding, 0, width - dividePadding, strokeWidth);
+            divideDrawable.draw(canvas);
         }
         if (drawRight) {
-            canvas.drawLine(width - interval, dividePadding, width - interval, height - dividePadding, paint);
+            divideDrawable.setBounds(width - strokeWidth, dividePadding, width, height - dividePadding);
+            divideDrawable.draw(canvas);
         }
         if (drawBottom) {
-            canvas.drawLine(dividePadding + leftPadding, height - interval, width - dividePadding, height - interval, paint);
+            divideDrawable.setBounds(dividePadding + leftPadding, height - strokeWidth, width - dividePadding, height);
+            divideDrawable.draw(canvas);
         }
     }
 }

@@ -24,9 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            auto:dl_divideColor="@color/dark_gray"
+            auto:dl_divideDrawable="@color/dark_gray"
             auto:dl_itemDivide="true"
-            auto:dl_itemDivideColor="@color/dark_gray">
+            auto:dl_itemDivideDrawable="@color/dark_gray">
 
             <TextView
                 android:layout_width="match_parent"
@@ -70,9 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                auto:dl_divideColor="@color/dark_gray"
-                auto:dl_itemDivide="true"
-                auto:dl_itemDivideColor="@color/dark_gray">
+                auto:dl_divideDrawable="@color/dark_gray"
+                auto:dl_itemDivideDrawable="@drawable/red_shape">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -175,12 +174,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:gravity="right"
-            auto:cl_items="@array/gravity1" />
+            auto:cl_items="@array/gravity4" />
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/sc_divide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/divide" />
+
     </LinearLayout>
 </FrameLayout>

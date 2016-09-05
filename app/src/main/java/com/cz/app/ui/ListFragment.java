@@ -39,6 +39,14 @@ public class ListFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(new SimpleAdapter(getActivity(), DataProvider.ITEMS));
         RadioLayout radioLayout = (RadioLayout) view.findViewById(R.id.rl_frame);
+        frameView.setFrame(FrameView.PROGRESS,0);
+
+        frameView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                frameView.setFrame(FrameView.CONTAINER,600);
+            }
+        },0);
         radioLayout.setOnCheckedListener(new RadioLayout.OnCheckedListener() {
             @Override
             public void onChecked(View v, int position, boolean isChecked) {

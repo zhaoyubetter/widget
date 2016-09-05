@@ -25,6 +25,7 @@
         android:layout_alignParentRight="true"
         android:background="@color/app_bg"
         auto:li_text_color="@color/white"
+        auto:li_text_size="9sp"
         auto:li_type="rectangle" />
 
     <TextView

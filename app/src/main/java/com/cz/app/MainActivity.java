@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new Item("CenterTextView", "com.cz.app.ui.CenterTextViewFragment", ""));
         items.add(new Item("DivideLinearLayout", "com.cz.app.ui.DivideLinedarLayoutFragment", ""));
         items.add(new Item("FrameView", "com.cz.app.ui.FrameViewFragment", ""));
+        items.add(new Item("ListFragment", "com.cz.app.ui.ListFragment", ""));
         items.add(new Item("IndicateView", "com.cz.app.ui.IndicateViewFragment", ""));
         items.add(new Item("ListIndicator", "com.cz.app.ui.ListIndicateFragment", ""));
         items.add(new Item("CenterGridLayout", "com.cz.app.ui.CenterGridLayoutFragment", ""));

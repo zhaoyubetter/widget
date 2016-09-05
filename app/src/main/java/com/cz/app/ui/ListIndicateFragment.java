@@ -50,6 +50,8 @@ public class ListIndicateFragment extends Fragment {
         listIndicator.setData(words);
 
         final ArrayList<Integer> positions = new ArrayList<>();
+        positions.add(0);
+        positions.add(0);
         if (null != DataProvider.ITEMS) {
             String word = null;
             int length = DataProvider.ITEMS.length;

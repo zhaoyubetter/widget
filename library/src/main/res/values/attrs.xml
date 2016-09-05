@@ -44,18 +44,51 @@
 
     <declare-styleable name="DivideLinearLayout">
         <attr name="dl_itemDivide" format="boolean" />
-        <attr name="dl_divideColor" format="reference|color" />
+        <attr name="dl_divideDrawable" format="reference" />
         <attr name="dl_dividePadding" format="dimension" />
         <attr name="dl_divideSize" format="dimension" />
         <attr name="dl_leftPadding" format="dimension" />
         <attr name="dl_itemDivideSize" format="dimension" />
-        <attr name="dl_itemDivideColor" format="reference" />
+        <attr name="dl_itemDivideDrawable" format="reference" />
         <attr name="dl_itemDividePadding" format="dimension" />
         <attr name="dl_divideGravity">
-            <flag name="left" value="0x01" />
-            <flag name="top" value="0x02" />
-            <flag name="right" value="0x04" />
-            <flag name="bottom" value="0x08" />
+            <flag name="none" value="0x01" />
+            <flag name="left" value="0x02" />
+            <flag name="top" value="0x04" />
+            <flag name="right" value="0x08" />
+            <flag name="bottom" value="0x10" />
+            <flag name="horizontal_divide" value="0x20" />
+            <flag name="vertical_divide" value="0x40" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="DivideRelativeLayout">
+        <attr name="dr_itemDivide" format="boolean" />
+        <attr name="dr_divideDrawable" format="reference" />
+        <attr name="dr_dividePadding" format="dimension" />
+        <attr name="dr_divideSize" format="dimension" />
+        <attr name="dr_leftPadding" format="dimension" />
+        <attr name="dr_divideGravity">
+            <flag name="none" value="0x01" />
+            <flag name="left" value="0x02" />
+            <flag name="top" value="0x04" />
+            <flag name="right" value="0x08" />
+            <flag name="bottom" value="0x10" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="DivideTextView">
+        <attr name="dt_itemDivide" format="boolean" />
+        <attr name="dt_divideDrawable" format="reference" />
+        <attr name="dt_dividePadding" format="dimension" />
+        <attr name="dt_divideSize" format="dimension" />
+        <attr name="dt_leftPadding" format="dimension" />
+        <attr name="dt_divideGravity">
+            <flag name="none" value="0x01" />
+            <flag name="left" value="0x02" />
+            <flag name="top" value="0x04" />
+            <flag name="right" value="0x08" />
+            <flag name="bottom" value="0x10" />
         </attr>
     </declare-styleable>
     <declare-styleable name="TitleBar">
@@ -225,14 +258,6 @@
         <attr name="vi_is_3d" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="RecyclerTabLayout">
-        <attr name="rtl_tabIndicatorColor" format="color" />
-        <attr name="rtl_tabSelectColor" format="color" />
-        <attr name="rtl_tabDefaultColor" format="color" />
-        <attr name="rtl_tabIndicatorHeight" format="dimension" />
-        <attr name="rtl_tabIndicatorPadding" format="dimension" />
-        <attr name="rtl_tabScale" format="float" />
-    </declare-styleable>
 
 
     <declare-styleable name="ProgressBar">

@@ -133,23 +133,27 @@ public class TemplateView extends RelativeLayout {
      */
     private void setFrame(final int frame, final boolean animate, boolean check, long delayTime) {
         if (null != container && (check || frame != lastFrame)) {
-            //防止重复设置
+            //防止多次设置
             if (null != frameAction) {
                 removeCallbacks(frameAction);
             }
-            View showView = getChildAt(frame);
-            View closeView = getChildAt(lastFrame);
-            closeView.setVisibility(View.GONE);//隐藏
-            showView.setVisibility(View.VISIBLE);
-            if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
-                ViewCompat.setAlpha(showView, 0f);
-                ViewCompat.animate(showView).alpha(1f);
-            } else {
-                showView.clearAnimation();
-                closeView.clearAnimation();
-            }
-            lastFrame = frame;
-
+            postDelayed(frameAction=new Runnable() {
+                @Override
+                public void run() {
+                    View showView = getChildAt(frame);
+                    View closeView = getChildAt(lastFrame);
+                    closeView.setVisibility(View.GONE);//隐藏
+                    showView.setVisibility(View.VISIBLE);
+                    if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
+                        ViewCompat.setAlpha(showView, 0f);
+                        ViewCompat.animate(showView).alpha(1f);
+                    } else {
+                        showView.clearAnimation();
+                        closeView.clearAnimation();
+                    }
+                    lastFrame = frame;
+                }
+            },delayTime);
         }
     }
 

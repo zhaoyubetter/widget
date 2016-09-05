@@ -1,10 +1,10 @@
 package com.cz.library.widget;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,29 +18,29 @@ import com.cz.library.R;
  * Created by cz on 2014/8/8
  */
 public class DivideLinearLayout extends LinearLayout {
-    public final static String MATERIALDESIGNXML = "http://schemas.android.com/apk/res-auto";
-    public static final int NONE = 0x00;
-    public static final int LEFT = 0x01;
-    public static final int TOP = 0x02;
-    public static final int RIGHT = 0x04;
-    public static final int BOTTOM = 0x08;
-    private boolean isShowItemDivide;// 显示子条目分隔线
+    public static final int NONE = 0x01;
+    public static final int LEFT = 0x02;
+    public static final int TOP = 0x04;
+    public static final int RIGHT = 0x08;
+    public static final int BOTTOM = 0x10;
+    public static final int HORIZONTAL_DIVIDE = 0x20;
+    public static final int VERTICAL_DIVIDE = 0x40;
 
-    private float strokeSize;
-    private float itemStrokeSize;
+    @IntDef({NONE, LEFT, TOP, RIGHT, BOTTOM, HORIZONTAL_DIVIDE, VERTICAL_DIVIDE})
+    public @interface DivideGravity {
+    }
 
-    private int divideColor;
-    private int itemDivideColor;
-
+    private int strokeSize;
+    private int itemStrokeSize;
     private int dividePadding;
     private int itemDividePadding;
     private int leftPadding;//左下单独边距,项目内这块需要比较多大
+    private Drawable divideDrawable;
+    private Drawable itemDivideDrawable;
     private int gravity;
-    private Paint paint;
 
     public DivideLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        paint = new Paint();
         setWillNotDraw(false);
         initAttribute(context, attrs);
     }
@@ -56,17 +56,15 @@ public class DivideLinearLayout extends LinearLayout {
      * @param attrs
      */
     private void initAttribute(Context context, AttributeSet attrs) {
-        Resources resources = getResources();
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DivideLinearLayout);
-        setDivideGravity(a.getInt(R.styleable.DivideLinearLayout_dl_divideGravity, NONE));
-        setItemDivide(a.getBoolean(R.styleable.DivideLinearLayout_dl_itemDivide, false));
+        setDivideGravityInner(a.getInt(R.styleable.DivideLinearLayout_dl_divideGravity, NONE));
         setDivideSize(a.getDimension(R.styleable.DivideLinearLayout_dl_divideSize, getResources().getDimension(R.dimen.divideSize)));
         setItemDivideSize(a.getDimension(R.styleable.DivideLinearLayout_dl_itemDivideSize, getResources().getDimension(R.dimen.divideSize)));
-        setDivideColor(a.getColor(R.styleable.DivideLinearLayout_dl_divideColor, resources.getColor(R.color.divide)));
-        setItemDivideColor(a.getColor(R.styleable.DivideLinearLayout_dl_itemDivideColor, resources.getColor(R.color.divide)));
-        setDividePadding((int) a.getDimension(R.styleable.DivideLinearLayout_dl_dividePadding, 0f));
-        setLeftPadding((int) a.getDimension(R.styleable.DivideLinearLayout_dl_leftPadding, 0f));
-        setItemDividePadding((int) a.getDimension(R.styleable.DivideLinearLayout_dl_itemDividePadding, 0f));
+        setDivideDrawable(a.getDrawable(R.styleable.DivideLinearLayout_dl_divideDrawable));
+        setItemDivideDrawable(a.getDrawable(R.styleable.DivideLinearLayout_dl_itemDivideDrawable));
+        setDividePadding(a.getDimension(R.styleable.DivideLinearLayout_dl_dividePadding, 0f));
+        setLeftPadding(a.getDimension(R.styleable.DivideLinearLayout_dl_leftPadding, 0f));
+        setItemDividePadding(a.getDimension(R.styleable.DivideLinearLayout_dl_itemDividePadding, 0f));
         a.recycle();
     }
 
@@ -75,32 +73,17 @@ public class DivideLinearLayout extends LinearLayout {
      *
      * @param padding
      */
-    private void setLeftPadding(int padding) {
-        this.leftPadding = padding;
+    private void setLeftPadding(float padding) {
+        this.leftPadding = Math.round(padding);
         invalidate();
     }
 
-    private int getResourceColor(AttributeSet attrs, String attrName, int defaultColor) {
-        int color = attrs.getAttributeResourceValue(MATERIALDESIGNXML, attrName, defaultColor);
-        if (defaultColor == color) {
-            color = attrs.getAttributeIntValue(MATERIALDESIGNXML, attrName, defaultColor);
-        } else {
-            color = getResources().getColor(color);
-        }
-        return color;
+
+    public void setDivideGravity(@DivideGravity int gravity) {
+        setDivideGravityInner(gravity);
     }
 
-    /**
-     * 显示条目分隔线
-     *
-     * @param showItemDivide
-     */
-    public void setItemDivide(boolean showItemDivide) {
-        this.isShowItemDivide = showItemDivide;
-        invalidate();
-    }
-
-    public void setDivideGravity(int gravity) {
+    public void setDivideGravityInner(int gravity) {
         this.gravity = gravity;
         invalidate();
     }
@@ -111,7 +94,7 @@ public class DivideLinearLayout extends LinearLayout {
      * @param size
      */
     public void setDivideSize(float size) {
-        this.strokeSize = size;
+        this.strokeSize = Math.round(size);
         invalidate();
     }
 
@@ -121,17 +104,17 @@ public class DivideLinearLayout extends LinearLayout {
      * @param size
      */
     public void setItemDivideSize(float size) {
-        this.itemStrokeSize = size;
+        this.itemStrokeSize = Math.round(size);
         invalidate();
     }
 
-    public void setDivideColor(int color) {
-        this.divideColor = color;
+    public void setDivideDrawable(Drawable drawable) {
+        this.divideDrawable = drawable;
         invalidate();
     }
 
-    public void setItemDivideColor(int color) {
-        this.itemDivideColor = color;
+    public void setItemDivideDrawable(Drawable drawable) {
+        this.itemDivideDrawable = drawable;
         invalidate();
     }
 
@@ -140,8 +123,8 @@ public class DivideLinearLayout extends LinearLayout {
      *
      * @param padding
      */
-    public void setDividePadding(int padding) {
-        this.dividePadding = padding;
+    public void setDividePadding(float padding) {
+        this.dividePadding = Math.round(padding);
         invalidate();
     }
 
@@ -150,8 +133,8 @@ public class DivideLinearLayout extends LinearLayout {
      *
      * @param padding
      */
-    public void setItemDividePadding(int padding) {
-        this.itemDividePadding = padding;
+    public void setItemDividePadding(float padding) {
+        this.itemDividePadding = Math.round(padding);
         invalidate();
     }
 
@@ -172,24 +155,27 @@ public class DivideLinearLayout extends LinearLayout {
     }
 
     private void drawDivide(Canvas canvas, boolean drawLeft, boolean drawTop, boolean drawRight, boolean drawBottom) {
-        paint.reset();
-        paint.setColor(divideColor);
+        if(null==divideDrawable)return;
         int width = getWidth();
         int height = getHeight();
-        float interval = strokeSize / 2;
-        paint.setStrokeWidth(strokeSize);
+
         if (drawLeft) {
-            canvas.drawLine(interval, dividePadding, interval, height - dividePadding, paint);
+            divideDrawable.setBounds(0, dividePadding, strokeSize, height - dividePadding);
+            divideDrawable.draw(canvas);
         }
         if (drawTop) {
-            canvas.drawLine(dividePadding, interval, width - dividePadding, interval, paint);
+            divideDrawable.setBounds(dividePadding, 0, width - dividePadding, strokeSize);
+            divideDrawable.draw(canvas);
         }
         if (drawRight) {
-            canvas.drawLine(width - interval, dividePadding, width - interval, height - dividePadding, paint);
+            divideDrawable.setBounds(width - strokeSize, dividePadding, width, height - dividePadding);
+            divideDrawable.draw(canvas);
         }
         if (drawBottom) {
-            canvas.drawLine(dividePadding + leftPadding, height - interval, width - dividePadding, height - interval, paint);
+            divideDrawable.setBounds(dividePadding + leftPadding, height - strokeSize, width - dividePadding, height);
+            divideDrawable.draw(canvas);
         }
+
     }
 
     /**
@@ -198,28 +184,26 @@ public class DivideLinearLayout extends LinearLayout {
      * @param canvas
      */
     private void drawItemDivide(Canvas canvas) {
-        if (isShowItemDivide) {
-            paint.reset();
-            paint.setColor(itemDivideColor);
-            paint.setStrokeWidth((int) (itemStrokeSize / 2 + 0.5f));
-            int width = getWidth();
-            int height = getHeight();
-            int orientation = getOrientation();
-            int childCount = getChildCount();
-            for (int i = 0; i < childCount - 1; i++) {
-                View childView = getChildAt(i);
-                if (View.VISIBLE == childView.getVisibility()) {
-                    int paddingLeft = getPaddingLeft();
-                    int paddingTop = getPaddingTop();
-                    int paddingRight = getPaddingRight();
-                    int paddingBottom = getPaddingBottom();
-                    if (HORIZONTAL == orientation) {
-                        int right = childView.getRight();
-                        canvas.drawLine(right, itemDividePadding + paddingTop, right, height - itemDividePadding - paddingBottom, paint);
-                    } else if (VERTICAL == orientation) {
-                        int bottom = childView.getBottom();
-                        canvas.drawLine(itemDividePadding + paddingLeft, bottom, width - itemDividePadding - paddingRight, bottom, paint);
-                    }
+        if(null==itemDivideDrawable) return;
+        int width = getWidth();
+        int height = getHeight();
+        int orientation = getOrientation();
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount - 1; i++) {
+            View childView = getChildAt(i);
+            if (View.VISIBLE == childView.getVisibility()) {
+                int paddingLeft = getPaddingLeft();
+                int paddingTop = getPaddingTop();
+                int paddingRight = getPaddingRight();
+                int paddingBottom = getPaddingBottom();
+                if (HORIZONTAL == orientation&&gravity == (gravity | HORIZONTAL_DIVIDE)) {
+                    int right = childView.getRight();
+                    itemDivideDrawable.setBounds(right-itemStrokeSize, itemDividePadding + paddingTop, right, height - itemDividePadding - paddingBottom);
+                    itemDivideDrawable.draw(canvas);
+                } else if (VERTICAL == orientation&&gravity == (gravity | VERTICAL_DIVIDE)) {
+                    int bottom = childView.getBottom();
+                    itemDivideDrawable.setBounds(itemDividePadding + paddingLeft, bottom-itemStrokeSize, width - itemDividePadding - paddingRight, bottom);
+                    itemDivideDrawable.draw(canvas);
                 }
             }
         }

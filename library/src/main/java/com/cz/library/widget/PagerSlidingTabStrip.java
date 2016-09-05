@@ -25,7 +25,6 @@ import com.cz.library.util.Utils;
  * 更改自github#PagerSlidingTabStrip，配合viewpager使用。
  *
  * Created by cz on 2015/1/20
- * @see RecyclerTabLayout recyclerView的实现,更为合理
  */
 public class PagerSlidingTabStrip extends HorizontalScrollView implements ViewPager.OnPageChangeListener {
 
