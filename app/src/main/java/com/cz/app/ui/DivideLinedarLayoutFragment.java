@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.cz.app.R;
 import com.cz.app.widget.CheckLayout;
 import com.cz.library.widget.DivideLinearLayout;
+import com.cz.library.widget.DivideTextView;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class DivideLinedarLayoutFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final DivideLinearLayout layout1 = (DivideLinearLayout) view.findViewById(R.id.layout1);
         final DivideLinearLayout layout2 = (DivideLinearLayout) view.findViewById(R.id.layout2);
+        final DivideTextView textView= (DivideTextView) view.findViewById(R.id.text_view);
         CheckLayout checkLayout = (CheckLayout) view.findViewById(R.id.cl_gravity);
         checkLayout.setOnCheckedListener(new CheckLayout.OnCheckedListener() {
             @Override

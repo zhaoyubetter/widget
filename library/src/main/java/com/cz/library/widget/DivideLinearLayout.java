@@ -142,17 +142,14 @@ public class DivideLinearLayout extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         // 绘制周边分隔线
-        drawDivide(canvas);
-        // 画divider
-        drawItemDivide(canvas);
-    }
-
-    private void drawDivide(Canvas canvas) {
         drawDivide(canvas, gravity == (gravity | LEFT),
                 gravity == (gravity | TOP),
                 gravity == (gravity | RIGHT),
                 gravity == (gravity | BOTTOM));
+        // 画divider
+        drawItemDivide(canvas);
     }
+
 
     private void drawDivide(Canvas canvas, boolean drawLeft, boolean drawTop, boolean drawRight, boolean drawBottom) {
         if(null==divideDrawable)return;

@@ -147,9 +147,6 @@ public class TemplateView extends RelativeLayout {
                     if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
                         ViewCompat.setAlpha(showView, 0f);
                         ViewCompat.animate(showView).alpha(1f);
-                    } else {
-                        showView.clearAnimation();
-                        closeView.clearAnimation();
                     }
                     lastFrame = frame;
                 }

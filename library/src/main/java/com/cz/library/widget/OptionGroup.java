@@ -12,6 +12,8 @@ import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -37,6 +39,9 @@ public class OptionGroup extends RadioGroup {
     public static final int GROUP_EDGE = 0;//边缘
     public static final int ITEM_EDGE = 1;//条目
 
+    private static final int WRAP_CONTENT=0x00;
+    private static final int WEIGHT=0x01;
+
     private static final int TEXT_SIZE = 14;
     private static final int DEFAULT_TEXT_PADDING = 0;
     private static final int DEFAULT_BUTTON_ROUND = 4;
@@ -54,6 +59,7 @@ public class OptionGroup extends RadioGroup {
     private float itemTextSize;//子条目文字大小
     private int itemMargin;//设置button的Margin
     private int selectPosition;// 选中位置
+    private int itemWidthMode;
     private int edgeMode;//条目边缘模式
     private OnCheckedListener listener;// 选中监听
     private Paint paint;
@@ -72,6 +78,7 @@ public class OptionGroup extends RadioGroup {
         setOrientation(HORIZONTAL);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.OptionGroup);
+        setItemWidthMode(a.getInt(R.styleable.OptionGroup_og_itemWidthMode,WRAP_CONTENT));
         setBackGroundColor(a.getColor(R.styleable.OptionGroup_og_backGroundColor, Color.TRANSPARENT));
         setDividerSize((int) a.getDimension(R.styleable.OptionGroup_og_divideSize, Utils.dip2px(1)));
         setDivideColor(a.getColor(R.styleable.OptionGroup_og_divideColor, DEFAULT_COLOR));
@@ -87,6 +94,27 @@ public class OptionGroup extends RadioGroup {
         setDefaultColor(a.getColor(R.styleable.OptionGroup_og_defaultColor, Color.TRANSPARENT));
         setItems(a.getTextArray(R.styleable.OptionGroup_og_items));
         a.recycle();
+    }
+
+    public void setItemWidthMode(int mode) {
+        this.itemWidthMode=mode;
+        if(WRAP_CONTENT==mode){
+            int childCount = getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View childView = getChildAt(i);
+                LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) childView.getLayoutParams();
+                layoutParams.width= ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
+        } else if(WEIGHT==mode){
+            int childCount = getChildCount();
+            setWeightSum(childCount);
+            for (int i = 0; i < childCount; i++) {
+                View childView = getChildAt(i);
+                LinearLayout.LayoutParams layoutParams= (LinearLayout.LayoutParams) childView.getLayoutParams();
+                layoutParams.weight=1;
+            }
+        }
+        requestLayout();
     }
 
     /**
@@ -210,10 +238,8 @@ public class OptionGroup extends RadioGroup {
     private void initItems(final CharSequence[] titles) {
         removeAllViews();
         RadioButton button;
-        RadioGroup.LayoutParams layoutParams;
+        RadioGroup.LayoutParams layoutParams=null;
         for (int i = 0, length = titles.length; i < length; i++) {
-            layoutParams = new RadioGroup.LayoutParams(0, RadioGroup.LayoutParams.MATCH_PARENT, 1f);
-            layoutParams.setMargins(itemMargin, itemMargin, itemMargin, itemMargin);
             button = new RadioButton(getContext());
             button.setButtonDrawable(new ColorDrawable(Color.TRANSPARENT));
             button.setGravity(Gravity.CENTER);
@@ -236,7 +262,15 @@ public class OptionGroup extends RadioGroup {
                     }
                 }
             });
-            addView(button, layoutParams);
+            if(WRAP_CONTENT==itemWidthMode){
+                layoutParams = new RadioGroup.LayoutParams(LayoutParams.WRAP_CONTENT, RadioGroup.LayoutParams.MATCH_PARENT);
+                layoutParams.setMargins(itemMargin, itemMargin, itemMargin, itemMargin);
+            } else if(WEIGHT==itemWidthMode){
+                layoutParams = new RadioGroup.LayoutParams(0, RadioGroup.LayoutParams.MATCH_PARENT, 1f);
+            }
+            if(null!=layoutParams){
+                addView(button, layoutParams);
+            }
         }
         // 默认选中第一个
         setChecked(selectPosition);

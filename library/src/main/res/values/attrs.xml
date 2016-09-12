@@ -21,6 +21,11 @@
         <attr name="og_backGroundColor" format="color" />
         <!--条目的Margin-->
         <attr name="og_itemMargin" format="dimension" />
+
+        <attr name="og_itemWidthMode" format="enum">
+            <enum name="wrap_content" value="0x00"/>
+            <enum name="weight" value="0x01"/>
+        </attr>
         <attr name="og_itemEdgeMode" format="enum">
             <enum name="group_edge" value="0x00" />
             <enum name="item_edge" value="0x01" />

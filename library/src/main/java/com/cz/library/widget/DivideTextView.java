@@ -26,7 +26,6 @@ public class DivideTextView extends TextView {
 
     private Drawable divideDrawable;
     private int strokeWidth;
-    private int divideColor;
     private int dividePadding;
     private int leftPadding;//左下单独边距,项目内这块需要比较多大
     private int gravity;
@@ -62,7 +61,7 @@ public class DivideTextView extends TextView {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DivideTextView);
         setDivideGravityInner(a.getInt(R.styleable.DivideTextView_dt_divideGravity, NONE));
         setStrokeWidth(a.getDimension(R.styleable.DivideTextView_dt_divideSize, resources.getDimension(R.dimen.divideSize)));
-        setDivideColor(a.getColor(R.styleable.DivideTextView_dt_divideDrawable, resources.getColor(R.color.divide)));
+        setDivideDrawable(a.getDrawable(R.styleable.DivideTextView_dt_divideDrawable));
         setDividePadding(a.getDimension(R.styleable.DivideTextView_dt_dividePadding, 0f));
         setLeftPadding(a.getDimension(R.styleable.DivideTextView_dt_leftPadding, 0f));
         a.recycle();
@@ -90,8 +89,8 @@ public class DivideTextView extends TextView {
     }
 
 
-    public void setDivideColor(int color) {
-        this.divideColor = color;
+    public void setDivideDrawable(Drawable drawable) {
+        this.divideDrawable = drawable;
         invalidate();
     }
 
@@ -118,16 +117,12 @@ public class DivideTextView extends TextView {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        // 绘制周边分隔线
-        drawDivide(canvas);
-    }
-
-    private void drawDivide(Canvas canvas) {
         drawDivide(canvas, gravity == (gravity | LEFT),
                 gravity == (gravity | TOP),
                 gravity == (gravity | RIGHT),
                 gravity == (gravity | BOTTOM));
     }
+
 
     private void drawDivide(Canvas canvas, boolean drawLeft, boolean drawTop, boolean drawRight, boolean drawBottom) {
         if(null==divideDrawable)return;

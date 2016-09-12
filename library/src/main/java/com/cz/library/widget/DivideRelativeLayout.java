@@ -26,7 +26,6 @@ public class DivideRelativeLayout extends RelativeLayout {
 
     private Drawable divideDrawable;
     private int strokeWidth;
-    private int divideColor;
     private int dividePadding;
     private int leftPadding;//左下单独边距,项目内这块需要比较多大
     private int gravity;
@@ -56,7 +55,7 @@ public class DivideRelativeLayout extends RelativeLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DivideRelativeLayout);
         setDivideGravityInner(a.getInt(R.styleable.DivideRelativeLayout_dr_divideGravity, NONE));
         setStrokeWidth(a.getDimension(R.styleable.DivideRelativeLayout_dr_divideSize, resources.getDimension(R.dimen.divideSize)));
-        setDivideColor(a.getColor(R.styleable.DivideRelativeLayout_dr_divideDrawable, resources.getColor(R.color.divide)));
+        setDivideDrawable(a.getDrawable(R.styleable.DivideRelativeLayout_dr_divideDrawable));
         setDividePadding(a.getDimension(R.styleable.DivideRelativeLayout_dr_dividePadding, 0f));
         setLeftPadding(a.getDimension(R.styleable.DivideRelativeLayout_dr_leftPadding, 0f));
         a.recycle();
@@ -84,8 +83,8 @@ public class DivideRelativeLayout extends RelativeLayout {
     }
 
 
-    public void setDivideColor(int color) {
-        this.divideColor = color;
+    public void setDivideDrawable(Drawable drawable) {
+        this.divideDrawable = drawable;
         invalidate();
     }
 
@@ -112,16 +111,12 @@ public class DivideRelativeLayout extends RelativeLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        // 绘制周边分隔线
-        drawDivide(canvas);
-    }
-
-    private void drawDivide(Canvas canvas) {
         drawDivide(canvas, gravity == (gravity | LEFT),
                 gravity == (gravity | TOP),
                 gravity == (gravity | RIGHT),
                 gravity == (gravity | BOTTOM));
     }
+
 
     private void drawDivide(Canvas canvas, boolean drawLeft, boolean drawTop, boolean drawRight, boolean drawBottom) {
         if(null==divideDrawable)return;

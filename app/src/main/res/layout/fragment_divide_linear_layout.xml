@@ -71,7 +71,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 auto:dl_divideDrawable="@color/dark_gray"
-                auto:dl_itemDivideDrawable="@drawable/red_shape">
+                auto:dl_itemDivideDrawable="@color/dark_gray">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -166,6 +166,19 @@
 
             </com.cz.library.widget.DivideLinearLayout>
         </HorizontalScrollView>
+
+        <com.cz.library.widget.DivideTextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:text="@string/test"
+            android:textColor="@color/red"
+            auto:dt_divideGravity="left|right|top|bottom"
+            auto:dt_divideDrawable="@color/red"
+            auto:dt_divideSize="@dimen/divideSize"/>
 
 
         <com.cz.app.widget.CheckLayout
