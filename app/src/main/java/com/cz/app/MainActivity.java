@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new Item("OptionGroup", "com.cz.app.ui.OptionGroupFragment", ""));
         items.add(new Item("TabLinearLayoutFragment", "com.cz.app.ui.TabLinearLayoutFragment", ""));
         items.add(new Item("WaveImageView", "com.cz.app.ui.WaveImageViewFragment", ""));
-        items.add(new Item("TimeDownView", "com.cz.app.ui.FragmentTimerView", ""));
+        items.add(new Item("TimeDownView", "com.cz.app.ui.TimeViewFragment", ""));
         recyclerView.setAdapter(new SimpleAdapter(this, items));
         recyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.cz.library.widget;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -15,8 +16,6 @@ import android.view.View;
 import com.cz.library.R;
 import com.cz.library.util.Utils;
 
-import xyqb.library.AnimatorCompat;
-import xyqb.library.AnimatorUpdateListener;
 
 
 /**
@@ -318,15 +317,16 @@ public class ListIndicator extends View {
      * @param index
      */
     private void startAnim(final int index, final boolean reversal) {
-        AnimatorCompat.Animator animator = AnimatorCompat.ofFloat(1.0f);
-        animator.addUpdateListener(new AnimatorUpdateListener() {
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1.0f);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(AnimatorCompat.Animator animation, float fraction) {
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float fraction = valueAnimator.getAnimatedFraction();
                 fractions[index] = reversal ? 1 - fraction : fraction;
                 invalidate();
             }
         });
-        animator.start();
+        valueAnimator.start();
     }
 
     /**

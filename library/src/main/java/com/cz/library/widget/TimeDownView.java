@@ -8,7 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -16,6 +18,7 @@ import android.view.View;
 
 import com.cz.library.R;
 import com.cz.library.util.Utils;
+import com.cz.library.widget.translation.ITextTranslation;
 
 import java.text.DecimalFormat;
 
@@ -41,7 +44,8 @@ public class TimeDownView extends View {
     private DecimalFormat decimalFormatter;
     private float horizontalIntervalPadding;
     private float verticalIntervalPadding;
-    private float itemRoundRadius;
+    private float itemIntervalRoundRadius;
+    private ITextTranslation translation;
     private CountDownTimer timer;
     private TextPaint textPaint;
     private Paint paint;
@@ -63,10 +67,10 @@ public class TimeDownView extends View {
         setTextColor(a.getColor(R.styleable.TimeDownView_tv_textColor, Color.WHITE));
         setTextSize(a.getDimensionPixelSize(R.styleable.TimeDownView_tv_textSize, Utils.sp2px(12)));
         setItemPadding(a.getDimension(R.styleable.TimeDownView_tv_itemPadding, Utils.dip2px(4)));
-        setHorizontalIntervalPadding(a.getDimension(R.styleable.TimeDownView_tv_horizontalIntervalPadding, 0));
-        setVerticalIntervalPadding(a.getDimension(R.styleable.TimeDownView_tv_verticalIntervalPadding, 0));
-        setItemColor(a.getColor(R.styleable.TimeDownView_tv_itemColor, Color.TRANSPARENT));
-        setItemRoundRadius(a.getDimension(R.styleable.TimeDownView_tv_itemRoundRadius,0));
+        setHorizontalItemPadding(a.getDimension(R.styleable.TimeDownView_tv_horizontalItemPadding, 0));
+        setVerticalItemPadding(a.getDimension(R.styleable.TimeDownView_tv_verticalItemPadding, 0));
+        setItemIntervalColor(a.getColor(R.styleable.TimeDownView_tv_itemIntervalColor, Color.TRANSPARENT));
+        setItemIntervalRoundRadius(a.getDimension(R.styleable.TimeDownView_tv_itemIntervalRoundRadius,0));
         setItemDrawable(a.getDrawable(R.styleable.TimeDownView_tv_itemDrawable));
         setTimeValue(a.getInteger(R.styleable.TimeDownView_tv_timeValue, DAY));//默认1天
         setIntervalMode(a.getInt(R.styleable.TimeDownView_tv_intervalMode, CIRCLE));
@@ -75,14 +79,13 @@ public class TimeDownView extends View {
     }
 
 
-
-    public void setItemColor(int color) {
+    public void setItemIntervalColor(int color) {
         paint.setColor(color);
         invalidate();
     }
 
-    public void setItemRoundRadius(float radius) {
-        this.itemRoundRadius=radius;
+    public void setItemIntervalRoundRadius(float radius) {
+        this.itemIntervalRoundRadius =radius;
         invalidate();
     }
 
@@ -92,19 +95,19 @@ public class TimeDownView extends View {
         invalidate();
     }
 
-    public void setHorizontalIntervalPadding(float padding) {
+    public void setHorizontalItemPadding(float padding) {
         this.horizontalIntervalPadding = padding;
         invalidate();
     }
 
-    public void setVerticalIntervalPadding(float padding) {
+    public void setVerticalItemPadding(float padding) {
         this.verticalIntervalPadding = padding;
         invalidate();
     }
 
 
     public void setTextColor(int textColor) {
-        textPaint.setTextSize(textColor);
+        textPaint.setColor(textColor);
         invalidate();
     }
 
@@ -134,6 +137,10 @@ public class TimeDownView extends View {
         invalidate();
     }
 
+    public void setTextTransaltion(ITextTranslation transaltion){
+        this.translation=transaltion;
+    }
+
     /**
      * 初始化定时器对象
      *
@@ -148,9 +155,7 @@ public class TimeDownView extends View {
             @Override
             public void onTick(long millisUntilFinished) {
                 TimeDownView.this.timeValue = (int) millisUntilFinished;
-                if (hasWindowFocus()) {
-                    invalidate();//界面有焦点时才绘制,这个很重要,否则会千万无意义的重绘
-                }
+                invalidate();
             }
 
             @Override
@@ -162,14 +167,23 @@ public class TimeDownView extends View {
     }
 
     @Override
+    public void invalidate() {
+        if(hasWindowFocus()) super.invalidate();
+    }
+
+    @Override
+    public void postInvalidate() {
+        if(hasWindowFocus()) super.postInvalidate();
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //动态计算宽高
-        float itemPadding = this.itemPadding;//条目间隔大小
         CharSequence text = DEFAULT_VALUE;
-        int textWidth = 0, textHeight = 0;
+        float textWidth = 0, textHeight = 0;
         if (!TextUtils.isEmpty(text)) {
-            textWidth = (int) textPaint.measureText(text.toString());//文字宽
+            textWidth = textPaint.measureText(text.toString());//文字宽
             Rect textRect = new Rect();
             textPaint.getTextBounds(text.toString(), 0, text.length(), textRect);
             textHeight = textRect.height();
@@ -192,7 +206,8 @@ public class TimeDownView extends View {
         int hour = timeMillis / HOUR;
         int minute = (timeMillis - hour * HOUR) / MINUTES;
         int second = timeMillis / 1000 % 60;
-        float hourOffset = drawTimeValue(canvas, hour, 0);//绘时
+
+        float hourOffset = drawTimeValue(canvas, hour, getPaddingLeft());//绘时
         drawInterval(canvas, hourOffset);//时间隔
         float minuteOffset = drawTimeValue(canvas, minute, hourOffset + itemPadding);//绘分
         drawInterval(canvas, minuteOffset);//分间隔
@@ -208,30 +223,23 @@ public class TimeDownView extends View {
      */
     private float drawTimeValue(Canvas canvas, int value, float offset) {
         int height = getHeight();
-        int textWidth, textHeight;
-        int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
         String text = decimalFormatter.format(value);
-        textWidth = (int) paint.measureText(text.toString());//文字宽
-        Rect textRect = new Rect();
-        textPaint.getTextBounds(DEFAULT_VALUE, 0, DEFAULT_VALUE.length(), textRect);
-        textHeight = textRect.height();
-        float strokeWidth = textPaint.getStrokeWidth();//边框线宽
+        float textWidth = textPaint.measureText(text);//文字宽
         float right = offset + textWidth + horizontalIntervalPadding * 2;
         //绘条目背景
         if(null!=itemDrawable){
-//            Rect rect=new Rect((int)(offset + paddingLeft),
-//                    (int)(paddingTop + strokeWidth),
-//                    (int)right,(int)(textHeight + verticalIntervalPadding * 2 - strokeWidth));
-            RectF rectF = new RectF(offset + paddingLeft, paddingTop + strokeWidth, right, textHeight + verticalIntervalPadding * 2 - strokeWidth);//背景矩阵范围
-            paint.setColor(Color.YELLOW);
-            canvas.drawRect(rectF,paint);
-//            itemDrawable.setBounds(rect);
-//            itemDrawable.draw(canvas);
+            itemDrawable.setBounds((int)(offset), paddingTop,
+                    (int)right,height-getPaddingBottom());
+            itemDrawable.draw(canvas);
         }
         //绘文字
         float centerY = (height - (textPaint.descent() + textPaint.ascent())) / 2;//文字居中
-        canvas.drawText(text, offset + paddingLeft, centerY, textPaint);
+//        if(null!=translation){
+//            translation.drawFrame(canvas,textPaint,offset+horizontalIntervalPadding,centerY,text);
+//        } else {
+            canvas.drawText(text, offset+horizontalIntervalPadding, centerY, textPaint);
+//        }
         return right;
     }
 
@@ -253,14 +261,31 @@ public class TimeDownView extends View {
             canvas.drawRoundRect(new RectF(offset + halfPadding - intervalFlagSize / 2,
                             itemHeight - intervalFlagSize,
                             offset + halfPadding + intervalFlagSize / 2,
-                            itemHeight + intervalFlagSize), itemRoundRadius,
-                    itemRoundRadius, paint);//上边
+                            itemHeight + intervalFlagSize), itemIntervalRoundRadius,
+                    itemIntervalRoundRadius, paint);//上边
 
             canvas.drawRoundRect(new RectF(offset + halfPadding - intervalFlagSize / 2,
                             itemHeight * 2 - intervalFlagSize,
                             offset + halfPadding + intervalFlagSize / 2,
-                            itemHeight * 2 + intervalFlagSize), itemRoundRadius,
-                    itemRoundRadius, paint);//下边
+                            itemHeight * 2 + intervalFlagSize), itemIntervalRoundRadius,
+                    itemIntervalRoundRadius, paint);//下边
         }
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        Parcelable data = super.onSaveInstanceState();
+        bundle.putParcelable("data", data);
+        bundle.putInt("time", timeValue);
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        Bundle bundle = (Bundle) state;
+        Parcelable superData = bundle.getParcelable("data");
+        timeValue=bundle.getInt("time");
+        super.onRestoreInstanceState(superData);
     }
 }

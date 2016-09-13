@@ -6,7 +6,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName version
@@ -92,6 +92,6 @@ bintray {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:support-annotations:23.1.1'
-    compile 'com.cz.anim:library:1.0.0'
+    compile 'com.android.support:support-annotations:23.2.0'
     compile 'com.android.support:support-v4:23.2.0'
 }

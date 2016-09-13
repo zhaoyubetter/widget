@@ -13,7 +13,7 @@ import com.cz.app.widget.RadioLayout;
 import com.cz.library.util.Utils;
 import com.cz.library.widget.TimeDownView;
 
-public class FragmentTimerView extends Fragment {
+public class TimeViewFragment extends Fragment {
     private TimeDownView timer;
     private RadioLayout intervalMode;
     private TextView filletValue;
@@ -50,7 +50,7 @@ public class FragmentTimerView extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //0-10;
-                timer.setItemRoundRadius(progress);
+                timer.setItemIntervalRoundRadius(progress);
                 filletValue.setText(Utils.getString(R.string.fillet_value, progress));
             }
 

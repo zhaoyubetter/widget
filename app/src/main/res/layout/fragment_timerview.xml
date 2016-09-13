@@ -22,14 +22,17 @@
         android:id="@+id/tv_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/red"
+        android:padding="8dp"
+        auto:tv_itemIntervalColor="@color/yellow"
         android:layout_gravity="center_horizontal"
-        auto:tv_verticalIntervalPadding="2dp"
+        auto:tv_horizontalItemPadding="16dp"
+        auto:tv_verticalItemPadding="8dp"
         auto:tv_itemPadding="30dp"
         auto:tv_textSize="30sp"
+        auto:tv_textColor="@color/yellow"
         auto:tv_itemDrawable="@drawable/time_item_bg"
         auto:tv_intervalFlagSize="4dp"
-        auto:tv_itemRoundRadius="3dp"/>
+        auto:tv_itemIntervalRoundRadius="3dp"/>
 
 
 

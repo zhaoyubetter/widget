@@ -425,11 +425,11 @@
         <attr name="tv_textColor" format="color" />
         <attr name="tv_textSize" format="dimension" />
         <attr name="tv_itemPadding" format="dimension" />
-        <attr name="tv_horizontalIntervalPadding" format="dimension" />
-        <attr name="tv_verticalIntervalPadding" format="dimension" />
+        <attr name="tv_horizontalItemPadding" format="dimension" />
+        <attr name="tv_verticalItemPadding" format="dimension" />
         <attr name="tv_itemDrawable" format="reference" />
-        <attr name="tv_itemColor" format="color"/>
-        <attr name="tv_itemRoundRadius" format="dimension"/>
+        <attr name="tv_itemIntervalColor" format="color"/>
+        <attr name="tv_itemIntervalRoundRadius" format="dimension"/>
         <attr name="tv_timeValue" format="integer" />
         <attr name="tv_intervalFlagSize" format="dimension" />
         <attr name="tv_intervalMode" format="enum">

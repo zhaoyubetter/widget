@@ -1,5 +1,8 @@
 package com.cz.library.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -13,9 +16,6 @@ import android.view.ViewParent;
 import com.cz.library.R;
 import com.cz.library.util.Utils;
 
-import xyqb.library.AnimatorCompat;
-import xyqb.library.AnimatorListenerAdapter;
-import xyqb.library.AnimatorUpdateListener;
 
 /**
  * Created by cz on 15/8/21.
@@ -34,7 +34,7 @@ public class TabLinearLayout extends DivideLinearLayout {
     private int verticalPadding;
     private float fraction;//执行进度
     private int tabMode;
-    private AnimatorCompat.Animator animator;
+    private ValueAnimator valueAnimator;
     private OnSelectListener listener;
     private int selectPosition;//选中位置
     private int lastPosition;//上一次选中位置
@@ -128,26 +128,26 @@ public class TabLinearLayout extends DivideLinearLayout {
      */
     public void setSelectPosition(int index) {
         if (index != selectPosition) {
-            if (null != animator) {
-                animator.cancel();
+            if (null != valueAnimator) {
+                valueAnimator.cancel();
             }
             selectPosition = index;
-            animator = AnimatorCompat.ofFloat(1f);
-
-            animator.addUpdateListener(new AnimatorUpdateListener() {
+            valueAnimator =ValueAnimator.ofFloat(1.0f);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
-                public void onAnimationUpdate(AnimatorCompat.Animator animation, float fraction) {
-                    TabLinearLayout.this.fraction = animation.getAnimatedFraction();
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    TabLinearLayout.this.fraction = valueAnimator.getAnimatedFraction();
                     invalidate();
                 }
             });
-            animator.addListener(new AnimatorListenerAdapter() {
+            valueAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
-                public void onAnimationEnd(AnimatorCompat.Animator animation) {
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
                     lastPosition = selectPosition;
                 }
             });
-            this.animator.start();
+            valueAnimator.start();
             View selectView = getChildAt(selectPosition);
             View lastView = getChildAt(lastPosition);
             if (null != selectView) {
