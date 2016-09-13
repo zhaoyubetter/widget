@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg"
+    android:clickable="true"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="@string/time_downer_info"
+        android:textColor="@color/dark_gray"
+        android:textSize="15dp" />
+
+    <com.cz.library.widget.TimeDownView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:layout_gravity="center_horizontal"
+        auto:tv_verticalIntervalPadding="2dp"
+        auto:tv_itemPadding="30dp"
+        auto:tv_textSize="30sp"
+        auto:tv_itemDrawable="@drawable/time_item_bg"
+        auto:tv_intervalFlagSize="4dp"
+        auto:tv_itemRoundRadius="3dp"/>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="@string/interval_mode"
+        android:textColor="@color/dark_gray"
+        android:textSize="15dp" />
+
+    <com.cz.app.widget.RadioLayout
+        android:id="@+id/rl_indicate_gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal"
+        auto:rl_items="@array/time_indicate_gravity" />
+
+    <TextView
+        android:id="@+id/tv_fillet_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:text="@string/fillet"
+        android:textColor="@color/dark_gray"
+        android:textSize="15dp" />
+
+    <SeekBar
+        android:id="@+id/sb_fillet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="40" />
+</LinearLayout>

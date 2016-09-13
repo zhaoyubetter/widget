@@ -421,6 +421,23 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="TimeDownView">
+        <attr name="tv_textColor" format="color" />
+        <attr name="tv_textSize" format="dimension" />
+        <attr name="tv_itemPadding" format="dimension" />
+        <attr name="tv_horizontalIntervalPadding" format="dimension" />
+        <attr name="tv_verticalIntervalPadding" format="dimension" />
+        <attr name="tv_itemDrawable" format="reference" />
+        <attr name="tv_itemColor" format="color"/>
+        <attr name="tv_itemRoundRadius" format="dimension"/>
+        <attr name="tv_timeValue" format="integer" />
+        <attr name="tv_intervalFlagSize" format="dimension" />
+        <attr name="tv_intervalMode" format="enum">
+            <enum name="circle" value="0x00" />
+            <enum name="rectangle" value="0x01" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="WidgetAttr">
         <attr name="textColor" format="color" />
         <attr name="template" format="reference" />

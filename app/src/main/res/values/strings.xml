@@ -69,4 +69,9 @@
     <string name="tab_height">TabHeight</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="item_bg_mode">背景模式</string>
+    <string name="interval_mode">边距模式</string>
+    <string name="time_downer_info">定时的控件</string>
+    <string name="fillet">分隔模式</string>
+    <string name="fillet_value">圆角值:%1$s</string>
 </resources>

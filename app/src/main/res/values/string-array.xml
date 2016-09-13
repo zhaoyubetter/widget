@@ -194,4 +194,14 @@
         <item>CLIP</item>
         <item>FULL</item>
     </string-array>
+
+    <string-array name="time_indicate_gravity">
+        <item>圆形</item>
+        <item>方形</item>
+    </string-array>
+
+    <string-array name="backgroud_mode">
+        <item>实心</item>
+        <item>空心</item>
+    </string-array>
 </resources>
