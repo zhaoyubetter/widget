@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new Item("TabLinearLayoutFragment", "com.cz.app.ui.TabLinearLayoutFragment", ""));
         items.add(new Item("WaveImageView", "com.cz.app.ui.WaveImageViewFragment", ""));
         items.add(new Item("TimeDownView", "com.cz.app.ui.TimeViewFragment", ""));
+        items.add(new Item("BothTextView", "com.cz.app.ui.BothTextViewFragment", ""));
         recyclerView.setAdapter(new SimpleAdapter(this, items));
         recyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override

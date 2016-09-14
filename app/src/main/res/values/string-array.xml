@@ -204,4 +204,10 @@
         <item>实心</item>
         <item>空心</item>
     </string-array>
+
+    <string-array name="attachment_mode">
+        <item>边距</item>
+        <item>文字</item>
+        <item>图片</item>
+    </string-array>
 </resources>

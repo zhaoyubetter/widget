@@ -23,8 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        auto:tv_itemIntervalColor="@color/yellow"
         android:layout_gravity="center_horizontal"
+        auto:tv_itemIntervalColor="@color/yellow"
         auto:tv_horizontalItemPadding="16dp"
         auto:tv_verticalItemPadding="8dp"
         auto:tv_itemPadding="30dp"
@@ -44,7 +44,8 @@
         android:paddingTop="5dp"
         android:text="@string/interval_mode"
         android:textColor="@color/dark_gray"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        />
 
     <com.cz.app.widget.RadioLayout
         android:id="@+id/rl_indicate_gravity"

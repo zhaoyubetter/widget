@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Both TextView"/>
+
+    <com.cz.library.widget.BothTextView
+        android:id="@+id/bv_text_View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Hello"
+        android:textSize="14sp"
+        android:padding="24dp"
+        android:drawableLeft="@drawable/article_flag1"
+        android:drawableTop="@drawable/article_flag2"
+        android:drawableBottom="@drawable/article_flag3"
+        android:drawableRight="@drawable/article_flag4"
+        android:textColor="@color/dark_red"
+        auto:bv_handText="@string/sub_item"
+        android:background="@color/dark_gray"
+        auto:bv_handDefaultSet="true"
+        auto:bv_handTextSize="12sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gravity"/>
+
+    <com.cz.app.widget.CheckLayout
+        android:id="@+id/cl_gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        auto:cl_items="@array/gravity1"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gravity"/>
+
+    <com.cz.app.widget.RadioLayout
+        android:id="@+id/cl_attachment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        auto:rl_items="@array/attachment_mode"/>
+</LinearLayout>
