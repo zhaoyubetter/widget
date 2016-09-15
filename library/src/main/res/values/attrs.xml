@@ -439,24 +439,11 @@
     </declare-styleable>
 
     <declare-styleable name="BothTextView">
-        <attr name="bv_handText" format="reference" />
-        <attr name="bv_handDefaultSet" format="boolean" />
-        <attr name="bv_handTextSize" format="dimension" />
-        <attr name="bv_handTextColor" format="reference|color" />
-        <attr name="bv_handTextPadding" format="dimension" />
-        <attr name="bv_handLines" format="integer" />
-        <attr name="bv_handEndEllipsize" format="boolean" />
-        <attr name="bv_handTextGravity" >
-            <flag name="left" value="0x01"/>
-            <flag name="top" value="0x02"/>
-            <flag name="right" value="0x04"/>
-            <flag name="bottom" value="0x08"/>
-        </attr>
-        <attr name="bv_attachmentMode" format="enum">
-            <enum name="border" value="0x00"/>
-            <enum name="text" value="0x01"/>
-            <enum name="drawable" value="0x02"/>
-        </attr>
+        <attr name="bv_subText" format="string" />
+        <attr name="bv_subDefaultSet" format="boolean" />
+        <attr name="bv_subTextSize" format="dimension" />
+        <attr name="bv_subTextColor" format="reference|color" />
+        <attr name="bv_subTextRightPadding" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="WidgetAttr">
