@@ -17,10 +17,42 @@
         android:text="版本"
         android:textSize="20sp"
         android:padding="24dp"
+        auto:bv_subImageDrawablePadding="12dp"
+        auto:bv_subTextRightPadding="20dp"
+        auto:bv_subImageGravity="left"
+        auto:bv_subImageDrawable="@drawable/article_flag2"
         android:drawableLeft="@drawable/article_flag1"
         android:drawableRight="@drawable/article_flag4"
         android:textColor="@color/dark_red"
         android:background="@color/dark_gray"
-        auto:bv_subText="1.0.1" />
+        auto:bv_subText="1.0.2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gravity"/>
+
+    <com.cz.app.widget.RadioLayout
+        android:id="@+id/rl_gravity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal"
+        auto:rl_items="@array/gravity5"/>
+
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sb_width"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:sl_max="100"
+        auto:sl_info="@string/width"/>
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sb_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto:sl_max="100"
+        auto:sl_info="@string/height"/>
 
 </LinearLayout>

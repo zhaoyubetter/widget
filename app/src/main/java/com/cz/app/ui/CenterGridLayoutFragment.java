@@ -3,10 +3,12 @@ package com.cz.app.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.cz.app.R;
 import com.cz.app.widget.RadioLayout;
@@ -77,7 +79,15 @@ public class CenterGridLayoutFragment extends Fragment {
         view.findViewById(R.id.btn_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View childView = new View(getActivity());
+                TextView childView = new TextView(getActivity());
+                childView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                int childCount = layout.getChildCount();
+                String text="Text";
+                if(0==childCount){
+                    text="The first text";
+                }
+                childView.setText(text+childCount);
+                childView.setPadding(50,20,50,20);
                 childView.setBackgroundColor(colorItems[new Random().nextInt(colorItems.length)]);
                 layout.addView(childView);
             }

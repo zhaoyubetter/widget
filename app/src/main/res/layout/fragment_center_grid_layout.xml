@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@color/app_bg"
             android:minHeight="200dp"
-            auto:cl_itemHeight="60dp"
+            auto:cl_itemHeight="auto_height"
             auto:cl_itemHorizontalPadding="8dp"
             auto:cl_itemVerticalPadding="8dp"
             android:layout_marginBottom="4dp"
