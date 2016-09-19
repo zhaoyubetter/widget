@@ -32,6 +32,10 @@ public class TimeDownView extends View {
     public final int HOUR = 60 * MINUTES;// 小时毫秒值
     public final int DAY = 24 * HOUR;// 天毫秒值
 
+    private final int TYPE_HOUR=1;
+    private final int TYPE_MINUTE=2;
+    private final int TYPE_SECOND=3;
+
     //中间分隔模式
     public static final int CIRCLE = 0x00;
     public static final int RECTANGLE = 0x01;
@@ -41,6 +45,9 @@ public class TimeDownView extends View {
     private int timeValue;
     private float intervalFlagSize;//分隔标志大小
     private Drawable itemDrawable;
+    private Drawable hourItemDrawable;
+    private Drawable minuteItemDrawable;
+    private Drawable secondItemDrawable;
     private DecimalFormat decimalFormatter;
     private float horizontalIntervalPadding;
     private float verticalIntervalPadding;
@@ -70,13 +77,18 @@ public class TimeDownView extends View {
         setHorizontalItemPadding(a.getDimension(R.styleable.TimeDownView_tv_horizontalItemPadding, 0));
         setVerticalItemPadding(a.getDimension(R.styleable.TimeDownView_tv_verticalItemPadding, 0));
         setItemIntervalColor(a.getColor(R.styleable.TimeDownView_tv_itemIntervalColor, Color.TRANSPARENT));
-        setItemIntervalRoundRadius(a.getDimension(R.styleable.TimeDownView_tv_itemIntervalRoundRadius,0));
+        setItemIntervalRoundRadius(a.getDimension(R.styleable.TimeDownView_tv_itemIntervalRoundRadius, 0));
         setItemDrawable(a.getDrawable(R.styleable.TimeDownView_tv_itemDrawable));
+        setHourItemDrawable(a.getDrawable(R.styleable.TimeDownView_tv_hourItemDrawable));
+        setMinuteItemDrawable(a.getDrawable(R.styleable.TimeDownView_tv_minuteItemDrawable));
+        setSecondItemDrawable(a.getDrawable(R.styleable.TimeDownView_tv_secondItemDrawable));
         setTimeValue(a.getInteger(R.styleable.TimeDownView_tv_timeValue, DAY));//默认1天
         setIntervalMode(a.getInt(R.styleable.TimeDownView_tv_intervalMode, CIRCLE));
         setIntervalFlagSize(a.getDimension(R.styleable.TimeDownView_tv_intervalFlagSize, Utils.dip2px(1)));
         a.recycle();
     }
+
+
 
 
     public void setItemIntervalColor(int color) {
@@ -113,6 +125,21 @@ public class TimeDownView extends View {
 
     public void setItemDrawable(Drawable drawable) {
         this.itemDrawable = drawable;
+        invalidate();
+    }
+
+    public void setHourItemDrawable(Drawable drawable) {
+        this.hourItemDrawable = drawable;
+        invalidate();
+    }
+
+    public void setMinuteItemDrawable(Drawable drawable) {
+        this.minuteItemDrawable = drawable;
+        invalidate();
+    }
+
+    public void setSecondItemDrawable(Drawable drawable) {
+        this.secondItemDrawable = drawable;
         invalidate();
     }
 
@@ -207,11 +234,11 @@ public class TimeDownView extends View {
         int minute = (timeMillis - hour * HOUR) / MINUTES;
         int second = timeMillis / 1000 % 60;
 
-        float hourOffset = drawTimeValue(canvas, hour, getPaddingLeft());//绘时
+        float hourOffset = drawTimeValue(canvas, hour, getPaddingLeft(), TYPE_HOUR);//绘时
         drawInterval(canvas, hourOffset);//时间隔
-        float minuteOffset = drawTimeValue(canvas, minute, hourOffset + itemPadding);//绘分
+        float minuteOffset = drawTimeValue(canvas, minute, hourOffset + itemPadding, TYPE_MINUTE);//绘分
         drawInterval(canvas, minuteOffset);//分间隔
-        drawTimeValue(canvas, second, minuteOffset + itemPadding);//绘秒
+        drawTimeValue(canvas, second, minuteOffset + itemPadding, TYPE_SECOND);//绘秒
     }
 
     /**
@@ -221,26 +248,44 @@ public class TimeDownView extends View {
      * @param value
      * @param offset
      */
-    private float drawTimeValue(Canvas canvas, int value, float offset) {
+    private float drawTimeValue(Canvas canvas, int value, float offset,int type) {
         int height = getHeight();
         int paddingTop = getPaddingTop();
         String text = decimalFormatter.format(value);
         float textWidth = textPaint.measureText(text);//文字宽
         float right = offset + textWidth + horizontalIntervalPadding * 2;
         //绘条目背景
-        if(null!=itemDrawable){
-            itemDrawable.setBounds((int)(offset), paddingTop,
-                    (int)right,height-getPaddingBottom());
-            itemDrawable.draw(canvas);
+        Drawable drawable=null;
+        if(TYPE_HOUR==type){
+            drawable=getItemDrawable(hourItemDrawable,itemDrawable);
+        } else if(TYPE_MINUTE==type){
+            drawable=getItemDrawable(minuteItemDrawable,itemDrawable);
+        } else if(TYPE_SECOND==type){
+            drawable=getItemDrawable(secondItemDrawable,itemDrawable);
+        }
+        if(null!=drawable){
+            drawable.setBounds((int) (offset), paddingTop,
+                    (int) right, height - getPaddingBottom());
+            drawable.draw(canvas);
         }
         //绘文字
         float centerY = (height - (textPaint.descent() + textPaint.ascent())) / 2;//文字居中
 //        if(null!=translation){
 //            translation.drawFrame(canvas,textPaint,offset+horizontalIntervalPadding,centerY,text);
 //        } else {
-            canvas.drawText(text, offset+horizontalIntervalPadding, centerY, textPaint);
+            canvas.drawText(text, offset + horizontalIntervalPadding, centerY, textPaint);
 //        }
         return right;
+    }
+
+    private Drawable getItemDrawable(Drawable typeItemDrawable, Drawable itemDrawable) {
+        Drawable drawable=null;
+        if(null!=typeItemDrawable){
+            drawable=typeItemDrawable;
+        }else if(null!=itemDrawable){
+            drawable=itemDrawable;
+        }
+        return drawable;
     }
 
     /**

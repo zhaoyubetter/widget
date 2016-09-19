@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cz.library.R;
-import com.cz.library.util.Utils;
 
 
 /**
@@ -15,8 +14,10 @@ import com.cz.library.util.Utils;
  * 一个组控件组
  */
 public class CenterGridLayout extends ViewGroup {
-    private static final int ITEM_WIDTH = 0x00;
-    private static final int HORIZONTAL_PADDING = 0x01;
+    public static final int AUTO_HEIGHT=-1;
+    public static final int ITEM_WIDTH = 0x00;
+    public static final int HORIZONTAL_PADDING = 0x01;
+    private static final String TAG = "CenterGridLayout";
     private int fixRaw;//固定列表
     private int raw;//计算列数
     private int itemWidth;//指定条目宽
@@ -40,8 +41,12 @@ public class CenterGridLayout extends ViewGroup {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CenterGridLayout);
         setFixRaw(a.getInteger(R.styleable.CenterGridLayout_cl_fixRaw, 0));
-        setItemWidth((int) a.getDimension(R.styleable.CenterGridLayout_cl_itemHeight, 0));
-        setItemHeight((int) a.getDimension(R.styleable.CenterGridLayout_cl_itemHeight, Utils.dip2px(40)));
+        setItemWidth((int) a.getDimension(R.styleable.CenterGridLayout_cl_itemWidth, 0));
+        if(!a.hasValue(R.styleable.CenterGridLayout_cl_itemHeight)){
+            setItemHeight(AUTO_HEIGHT);
+        } else {
+            setItemHeight(a.getLayoutDimension(R.styleable.CenterGridLayout_cl_itemHeight, "cl_itemHeight"));
+        }
         setItemHorizontalPadding((int) a.getDimension(R.styleable.CenterGridLayout_cl_itemHorizontalPadding, 0));
         setItemVerticalPadding((int) a.getDimension(R.styleable.CenterGridLayout_cl_itemVerticalPadding, 0));
         setItemSizeMode(a.getInt(R.styleable.CenterGridLayout_cl_itemSizeMode, ITEM_WIDTH));
@@ -92,7 +97,7 @@ public class CenterGridLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int childCount = getChildCount();
-        int childWidth, childHeight;
+        int childWidth, childHeight=0;
         int paddingLeft = getPaddingLeft();
         int paddingTop = getPaddingTop();
         int paddingRight = getPaddingRight();
@@ -149,12 +154,19 @@ public class CenterGridLayout extends ViewGroup {
             }
         }
         int row = (0 == childCount % raw) ? childCount / raw : childCount / raw + 1;//fixRaw
-        childHeight = itemHeight;
         int cellWidthSpec = MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY);
-        int cellHeightSpec = MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.EXACTLY);
+        int cellHeightSpec =heightMeasureSpec;
+        if(AUTO_HEIGHT!=itemHeight){
+            childHeight = itemHeight;
+            cellHeightSpec = MeasureSpec.makeMeasureSpec(childHeight, MeasureSpec.EXACTLY);
+        }
         for (int index = 0; index < childCount; index++) {
             final View child = getChildAt(index);
             child.measure(cellWidthSpec, cellHeightSpec);
+            if(0>itemHeight) {
+                itemHeight=child.getMeasuredHeight();
+                childHeight = itemHeight;
+            }
         }
         //计算总高度
         int totalHeight = 0;

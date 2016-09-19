@@ -336,7 +336,9 @@
     <declare-styleable name="CenterGridLayout">
         <attr name="cl_fixRaw" format="integer" />
         <attr name="cl_itemWidth" format="dimension" />
-        <attr name="cl_itemHeight" format="dimension" />
+        <attr name="cl_itemHeight" format="dimension|enum" >
+            <enum name="auto_height" value="-1"/>
+        </attr>
         <attr name="cl_itemHorizontalPadding" format="dimension" />
         <attr name="cl_itemVerticalPadding" format="dimension" />
         <attr name="cl_itemSizeMode" format="enum">
@@ -428,6 +430,9 @@
         <attr name="tv_horizontalItemPadding" format="dimension" />
         <attr name="tv_verticalItemPadding" format="dimension" />
         <attr name="tv_itemDrawable" format="reference" />
+        <attr name="tv_hourItemDrawable" format="reference" />
+        <attr name="tv_minuteItemDrawable" format="reference" />
+        <attr name="tv_secondItemDrawable" format="reference" />
         <attr name="tv_itemIntervalColor" format="color"/>
         <attr name="tv_itemIntervalRoundRadius" format="dimension"/>
         <attr name="tv_timeValue" format="integer" />
@@ -444,6 +449,14 @@
         <attr name="bv_subTextSize" format="dimension" />
         <attr name="bv_subTextColor" format="reference|color" />
         <attr name="bv_subTextRightPadding" format="dimension" />
+        <attr name="bv_subImageDrawablePadding" format="dimension"/>
+        <attr name="bv_subImageDrawable" format="reference"/>
+        <attr name="bv_subImageDrawableWidth" format="reference"/>
+        <attr name="bv_subImageDrawableHeight" format="reference"/>
+        <attr name="bv_subImageGravity" format="enum">
+            <enum name="left" value="0x01"/>
+            <enum name="right" value="0x02"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="WidgetAttr">
