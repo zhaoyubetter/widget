@@ -304,20 +304,6 @@
         <attr name="fv_flagHeight" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="SearchView">
-        <attr name="sv_hintIcon" format="reference" />
-        <attr name="sv_hintIconShow" format="boolean" />
-        <attr name="sv_deleteIcon" format="reference" />
-        <attr name="sv_deleteHintIcon" format="reference" />
-        <attr name="sv_deleteBackground" format="reference" />
-        <attr name="sv_hintText" format="string" />
-        <attr name="sv_hintColor" format="reference" />
-        <attr name="sv_textColor" format="color" />
-        <attr name="sv_textSize" format="dimension" />
-        <attr name="sv_editPadding" format="dimension" />
-        <attr name="sv_submitShow" format="boolean" />
-        <attr name="sv_iconFilter" format="color" />
-    </declare-styleable>
 
     <declare-styleable name="LabelLinearLayout">
         <attr name="ll_textSize" format="dimension" />
@@ -470,6 +456,14 @@
         <attr name="sv_searchTextColor" format="color"/>
         <attr name="sv_searchTextSize" format="dimension"/>
         <attr name="sv_searchDeleteDrawable" format="reference"/>
+        <attr name="sv_editPadding" format="dimension" />
+        <attr name="sv_submitShow" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="DeleteEditText">
+        <attr name="dt_deleteDrawable" format="reference"/>
+        <attr name="dt_deleteDrawableWidth" format="dimension"/>
+        <attr name="dt_deleteDrawableHeight" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="WidgetAttr">
