@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -43,16 +44,19 @@ public class SearchView extends LinearLayout {
         editor= (EditText) findViewById(R.id.et_editor);
         deleteView= (ImageView) findViewById(R.id.iv_delete_icon);
 
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SearchView);
         setHintDrawable(a.getDrawable(R.styleable.SearchView_sv_hintDrawable));
         setSearchHint(a.getString(R.styleable.SearchView_sv_searchHint));
         setSearchText(a.getString(R.styleable.SearchView_sv_searchText));
         setSearchHintTextColor(a.getColor(R.styleable.SearchView_sv_searchHintTextColor, Color.DKGRAY));
         setSearchTextColor(a.getColor(R.styleable.SearchView_sv_searchTextColor, Color.GRAY));
+        setSearchTextSize(a.getDimensionPixelSize(R.styleable.SearchView_sv_searchTextSize,0));
         setSearchDeleteDrawable(a.getDrawable(R.styleable.SearchView_sv_searchDeleteDrawable));
+        setEditPadding((int) a.getDimension(R.styleable.SearchView_sv_editPadding,0));
         a.recycle();
     }
+
+
 
     @Override
     protected void onFinishInflate() {
@@ -112,6 +116,14 @@ public class SearchView extends LinearLayout {
 
     public void setSearchTextColor(int color) {
         editor.setTextColor(color);
+    }
+
+    public void setSearchTextSize(int textSize){
+        editor.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+    }
+
+    public void setEditPadding(int padding) {
+        editor.setPadding(padding,0,padding,0);
     }
 
     public EditText getEditor(){

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto1="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
+    android:clickable="true">
+
+    <com.cz.library.widget.DeleteEditText
+        android:id="@+id/dt_editor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto1:dt_deleteDrawable="@drawable/seacher_clear_icon"
+        auto1:dt_deleteDrawableWidth="20dp"
+        auto1:dt_deleteDrawableHeight="20dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:textSize="15sp"
+        android:textColor="@color/colorAccent"
+        auto1:dt_drawableRightPadding="8dp"
+        auto1:dt_drawableCenterOffset="4dp"
+        android:hint="@string/any_thing"
+        />
+
+
+    <com.cz.app.widget.SeekLayout
+        android:id="@+id/sl_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        auto1:sl_info="@string/center_offset" />
+</LinearLayout>

@@ -25,7 +25,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             auto:dl_divideDrawable="@color/dark_gray"
-            auto:dl_itemDivide="true"
             auto:dl_itemDivideDrawable="@color/dark_gray">
 
             <TextView

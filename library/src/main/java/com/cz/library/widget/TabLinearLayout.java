@@ -55,7 +55,6 @@ public class TabLinearLayout extends DivideLinearLayout {
         setHorizontalPadding((int) a.getDimension(R.styleable.TabLinearLayout_tll_horizontalPadding, 0));
         setVerticalPadding((int) a.getDimension(R.styleable.TabLinearLayout_tll_verticalPadding, 0));
         a.recycle();
-
     }
 
 
@@ -321,6 +320,14 @@ public class TabLinearLayout extends DivideLinearLayout {
             }
         }
         return start + (int) ((end - start) * fraction);
+    }
+
+
+    public void scrollToPosition(int position,int fraction){
+        this.lastPosition=selectPosition;
+        this.selectPosition=position;
+        this.fraction=fraction;
+        invalidate();
     }
 
 

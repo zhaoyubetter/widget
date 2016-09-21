@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.EditText;
 
@@ -20,30 +21,30 @@ import com.cz.library.R;
  */
 public class DeleteEditText extends EditText {
 
+    private static final String TAG = "DeleteEditText";
     private int drawableWidth;
     private int drawableHeight;
+    private int rightPadding;
+    private int centerOffset;
     private Drawable deleteDrawable;
     private TextChangeListener listener;
     private boolean showDrawable;
     private boolean touchInRect;
-    private OnDeleteTextListener deleteListener;
+    private OnDeleteItemClickListener deleteListener;
 
     public DeleteEditText(Context context) {
-        this(context, null, 0);
+        this(context, null);
     }
 
     public DeleteEditText(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public DeleteEditText(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DeleteEditText);
         setDeleteDrawable(a.getDrawable(R.styleable.DeleteEditText_dt_deleteDrawable));
         setDeleteDrawableWidth((int) a.getDimension(R.styleable.DeleteEditText_dt_deleteDrawableWidth, 0));
         setDeleteDrawableHeight((int) a.getDimension(R.styleable.DeleteEditText_dt_deleteDrawableHeight, 0));
+        setDrawableRightPadding((int) a.getDimension(R.styleable.DeleteEditText_dt_drawableRightPadding,0));
+        setDrawableCenterOffset((int)a.getDimension(R.styleable.DeleteEditText_dt_drawableCenterOffset,0));
         a.recycle();
-
 
         addTextChangedListener(new TextWatcher() {
             @Override
@@ -54,7 +55,7 @@ public class DeleteEditText extends EditText {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 showDrawable = !TextUtils.isEmpty(s);
                 if (null != listener) {
-                    listener.onTextChanged(s);
+                    listener.onTextChanged(s,start,before,count);
                 }
             }
 
@@ -64,6 +65,12 @@ public class DeleteEditText extends EditText {
         });
     }
 
+
+    public void setDrawableRightPadding(int padding) {
+        this.rightPadding=padding;
+        invalidate();
+    }
+
     public void setDeleteDrawable(Drawable drawable) {
         this.deleteDrawable=drawable;
         invalidate();
@@ -71,13 +78,16 @@ public class DeleteEditText extends EditText {
 
     public void setDeleteDrawableWidth(int width) {
         this.drawableWidth=width;
-        int paddingRight = getPaddingRight();
-        setPadding(getPaddingLeft(),getPaddingTop(),paddingRight+width,getPaddingRight());
         invalidate();
     }
 
     public void setDeleteDrawableHeight(int height) {
         this.drawableHeight=height;
+        invalidate();
+    }
+
+    public void setDrawableCenterOffset(int offset) {
+        this.centerOffset=offset;
         invalidate();
     }
 
@@ -87,9 +97,9 @@ public class DeleteEditText extends EditText {
         if(null!=deleteDrawable&&showDrawable){
             int width = getWidth();
             int height = getHeight();
-            int paddingRight = getPaddingRight();
-            int startY=(height-drawableHeight)/2;
-            deleteDrawable.setBounds(width-paddingRight,startY,width-paddingRight-drawableWidth,startY+drawableHeight);
+            int startY=(height-drawableHeight)/2+centerOffset;
+            deleteDrawable.setBounds(width-rightPadding-drawableWidth,startY,width-rightPadding,startY+drawableHeight);
+            deleteDrawable.draw(canvas);
         }
     }
 
@@ -105,8 +115,9 @@ public class DeleteEditText extends EditText {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if(showDrawable&&touchInRect&&touchInRect(x,y)&&null!=deleteListener){
-                    deleteListener.onTextDeleted();
+                if(showDrawable&&touchInRect&&touchInRect(x,y)){
+                    setText(null);
+                    if(null!=deleteListener) deleteListener.onTextDeleted();
                 }
                 break;
         }
@@ -116,9 +127,8 @@ public class DeleteEditText extends EditText {
     private boolean touchInRect(int x, int y) {
         int width = getWidth();
         int height = getHeight();
-        int paddingRight = getPaddingRight();
         int startY=(height-drawableHeight)/2;
-        Rect rect=new Rect(width-paddingRight,startY,width-paddingRight-drawableWidth,startY+drawableHeight);
+        Rect rect=new Rect(width-rightPadding-drawableWidth,startY,width-rightPadding,startY+drawableHeight);
         return rect.contains(x,y);
     }
 
@@ -127,14 +137,14 @@ public class DeleteEditText extends EditText {
     }
 
     public interface TextChangeListener{
-        void onTextChanged(CharSequence s);
+        void onTextChanged(CharSequence s,int start, int before, int count);
     }
 
-    public void setOnDeleteTextListener(OnDeleteTextListener deleteListener){
+    public void setOnDeleteItemClickListener(OnDeleteItemClickListener deleteListener){
         this.deleteListener=deleteListener;
     }
 
-    public interface OnDeleteTextListener{
+    public interface OnDeleteItemClickListener {
         void onTextDeleted();
     }
 }

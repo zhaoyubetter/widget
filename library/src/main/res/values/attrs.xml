@@ -48,7 +48,6 @@
 
 
     <declare-styleable name="DivideLinearLayout">
-        <attr name="dl_itemDivide" format="boolean" />
         <attr name="dl_divideDrawable" format="reference" />
         <attr name="dl_dividePadding" format="dimension" />
         <attr name="dl_divideSize" format="dimension" />
@@ -457,13 +456,14 @@
         <attr name="sv_searchTextSize" format="dimension"/>
         <attr name="sv_searchDeleteDrawable" format="reference"/>
         <attr name="sv_editPadding" format="dimension" />
-        <attr name="sv_submitShow" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="DeleteEditText">
         <attr name="dt_deleteDrawable" format="reference"/>
         <attr name="dt_deleteDrawableWidth" format="dimension"/>
+        <attr name="dt_drawableRightPadding" format="dimension"/>
         <attr name="dt_deleteDrawableHeight" format="dimension"/>
+        <attr name="dt_drawableCenterOffset" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="WidgetAttr">

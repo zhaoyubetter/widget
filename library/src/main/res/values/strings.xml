@@ -3,4 +3,5 @@
     <string name="loading">加载中...</string>
     <string name="retry">重试</string>
     <string name="error_info">请求失败,请检测网络或重试</string>
+    <string name="submit">提交</string>
 </resources>

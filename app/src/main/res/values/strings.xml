@@ -76,4 +76,6 @@
     <string name="fillet_value">圆角值:%1$s</string>
     <string name="gravity">方向</string>
     <string name="sub_item">Sub Item</string>
+    <string name="any_thing">AnyThing</string>
+    <string name="center_offset">CenterOffset</string>
 </resources>
