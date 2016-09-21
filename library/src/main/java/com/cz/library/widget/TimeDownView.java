@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
  * Created by czz on 16/01/10.
  */
 public class TimeDownView extends View {
+    private final static int NO_COLOR=0x01<<16;
     private final String DEFAULT_VALUE = "00";
     public final int MINUTES = 60 * 1000;// 分毫秒值
     public final int HOUR = 60 * MINUTES;// 小时毫秒值
@@ -55,6 +56,10 @@ public class TimeDownView extends View {
     private ITextTranslation translation;
     private CountDownTimer timer;
     private TextPaint textPaint;
+    private int textColor;
+    private int hourTextColor;
+    private int minuteTextColor;
+    private int secondTextColor;
     private Paint paint;
 
     public TimeDownView(Context context) {
@@ -72,6 +77,10 @@ public class TimeDownView extends View {
         decimalFormatter = new DecimalFormat("00");
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TimeDownView);
         setTextColor(a.getColor(R.styleable.TimeDownView_tv_textColor, Color.WHITE));
+        setHourTextColor(a.getColor(R.styleable.TimeDownView_tv_hourTextColor,NO_COLOR));
+        setMinuteTextColor(a.getColor(R.styleable.TimeDownView_tv_minuteTextColor, NO_COLOR));
+        setSecondTextColor(a.getColor(R.styleable.TimeDownView_tv_secondTextColor, NO_COLOR));
+
         setTextSize(a.getDimensionPixelSize(R.styleable.TimeDownView_tv_textSize, Utils.sp2px(12)));
         setItemPadding(a.getDimension(R.styleable.TimeDownView_tv_itemPadding, Utils.dip2px(4)));
         setHorizontalItemPadding(a.getDimension(R.styleable.TimeDownView_tv_horizontalItemPadding, 0));
@@ -119,7 +128,22 @@ public class TimeDownView extends View {
 
 
     public void setTextColor(int textColor) {
-        textPaint.setColor(textColor);
+        this.textColor=textColor;
+        invalidate();
+    }
+
+    public void setHourTextColor(int color) {
+        this.hourTextColor=color;
+        invalidate();
+    }
+
+    public void setMinuteTextColor(int color) {
+        this.minuteTextColor=color;
+        invalidate();
+    }
+
+    public void setSecondTextColor(int color) {
+        this.secondTextColor=color;
         invalidate();
     }
 
@@ -273,9 +297,26 @@ public class TimeDownView extends View {
 //        if(null!=translation){
 //            translation.drawFrame(canvas,textPaint,offset+horizontalIntervalPadding,centerY,text);
 //        } else {
+            int color=textColor;
+            if(TYPE_HOUR==type){
+                color=getItemTextColor(hourTextColor,textColor);
+            } else if(TYPE_MINUTE==type){
+                color=getItemTextColor(minuteTextColor,textColor);
+            } else if(TYPE_SECOND==type){
+                color=getItemTextColor(secondTextColor,textColor);
+            }
+            textPaint.setColor(color);
             canvas.drawText(text, offset + horizontalIntervalPadding, centerY, textPaint);
 //        }
         return right;
+    }
+
+    private int getItemTextColor(int itemColor,int textColor) {
+        int color=textColor;
+        if(itemColor!=NO_COLOR){
+            color=itemColor;
+        }
+        return color;
     }
 
     private Drawable getItemDrawable(Drawable typeItemDrawable, Drawable itemDrawable) {

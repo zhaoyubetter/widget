@@ -425,6 +425,9 @@
 
     <declare-styleable name="TimeDownView">
         <attr name="tv_textColor" format="color" />
+        <attr name="tv_hourTextColor" format="color" />
+        <attr name="tv_minuteTextColor" format="color" />
+        <attr name="tv_secondTextColor" format="color" />
         <attr name="tv_textSize" format="dimension" />
         <attr name="tv_itemPadding" format="dimension" />
         <attr name="tv_horizontalItemPadding" format="dimension" />
@@ -459,9 +462,20 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="SearchView">
+        <attr name="sv_hintDrawable" format="reference"/>
+        <attr name="sv_searchHint" format="string"/>
+        <attr name="sv_searchText" format="string"/>
+        <attr name="sv_searchHintTextColor" format="color"/>
+        <attr name="sv_searchTextColor" format="color"/>
+        <attr name="sv_searchTextSize" format="dimension"/>
+        <attr name="sv_searchDeleteDrawable" format="reference"/>
+    </declare-styleable>
+
     <declare-styleable name="WidgetAttr">
         <attr name="textColor" format="color" />
         <attr name="template" format="reference" />
     </declare-styleable>
+
 
 </resources>
