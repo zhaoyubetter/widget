@@ -466,6 +466,14 @@
         <attr name="dt_drawableCenterOffset" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="EditLayout">
+        <attr name="el_itemPadding" format="dimension"/>
+        <attr name="el_textColor" format="color"/>
+        <attr name="el_textSize" format="dimension"/>
+        <attr name="el_itemDivideSize" format="dimension"/>
+        <attr name="el_itemDivideDrawable" format="reference"/>
+    </declare-styleable>
+
     <declare-styleable name="WidgetAttr">
         <attr name="textColor" format="color" />
         <attr name="template" format="reference" />
