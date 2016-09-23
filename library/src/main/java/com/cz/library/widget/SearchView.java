@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -93,6 +94,10 @@ public class SearchView extends LinearLayout {
         });
     }
 
+    public void setHintDrawableResource(@DrawableRes int res) {
+        setHintDrawable(getResources().getDrawable(res));
+    }
+
     public void setHintDrawable(Drawable drawable) {
         if(null!=drawable){
             hintView.setVisibility(View.VISIBLE);
@@ -119,7 +124,11 @@ public class SearchView extends LinearLayout {
     }
 
     public void setSearchTextSize(int textSize){
-        editor.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+        editor.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+    }
+
+    public void setSearchInputType(int inputType){
+        editor.setInputType(inputType);
     }
 
     public void setEditPadding(int padding) {
@@ -128,6 +137,10 @@ public class SearchView extends LinearLayout {
 
     public EditText getEditor(){
         return editor;
+    }
+
+    public Editable getText(){
+        return editor.getText();
     }
 
     public void setSearchDeleteDrawable(Drawable drawable) {

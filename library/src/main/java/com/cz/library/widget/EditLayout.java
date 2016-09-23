@@ -4,11 +4,16 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.cz.library.R;
+
+import java.util.List;
 
 /**
  * Created by cz on 9/23/16.
@@ -87,24 +92,57 @@ public class EditLayout extends ViewGroup {
         for(int i=0;i<childCount;i++){
             View childView = getChildAt(i);
             top+=i*itemPadding;
-            childView.layout(paddingLeft,top,paddingRight,top+childView.getMeasuredHeight());
+            childView.layout(paddingLeft, top, paddingRight, top + childView.getMeasuredHeight());
         }
     }
 
     public void setAdapter(Adapter adapter){
-        this.adapter=adapter;
+        removeAllViews();
+        int itemCount = adapter.getItemCount();
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        for(int i=0;i<itemCount;i++){
+            LinearLayout itemLayout= (LinearLayout) layoutInflater.inflate(R.layout.edit_layout_item, this, false);
+            SearchView searchView= (SearchView) itemLayout.findViewById(R.id.search_view);
+            searchView.setHintDrawableResource(adapter.getHintDrawableResource(i));
+            searchView.setSearchHint(adapter.getHint(i));
+            searchView.setSearchInputType(adapter.getInputType(i));
+            searchView.setSearchTextColor(textColor);
+            searchView.setSearchTextSize(textSize);
+            View extraView = adapter.getExtraView(i);
+            if(null!=extraView){
+                itemLayout.addView(extraView,LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+        }
         requestLayout();
+    }
+
+    public Editable getItemValue(int position){
+        Editable text=null;
+        int childCount = getChildCount();
+        if(position<childCount){
+            View childView = getChildAt(position);
+            SearchView searchView= (SearchView) childView.findViewById(R.id.search_view);
+            text=searchView.getText();
+        }
+        return text;
     }
 
     public static abstract class Adapter{
         public abstract int getItemCount();
         public abstract String getHint(int position);
-        public abstract String getHintDrawableResource(int position);
+        public abstract int getHintDrawableResource(int position);
         public abstract View getExtraView(int position);
 //        editor.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
 //        editor.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 //        editor.setInputType(InputType.TYPE_CLASS_TEXT);
         public abstract int getInputType(int position);
+    }
 
+    public interface OnResultMatchListener{
+        void onMatch(List<Editable> items);
+    }
+
+    public interface OnExtraItemClickListener{
+        void onItemClickListener(View v,int index);
     }
 }
