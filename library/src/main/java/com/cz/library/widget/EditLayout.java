@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.cz.library.R;
 import com.cz.library.widget.validator.Validator;
+import com.cz.library.widget.validator.ValidatorObserver;
 import com.cz.library.widget.validator.impl.LengthValidator;
 import com.cz.library.widget.validator.impl.NotEmptyValidator;
 import com.cz.library.widget.validator.impl.pattern.CharacterValidator;
@@ -42,6 +43,16 @@ import java.util.regex.Pattern;
 
 /**
  * Created by cz on 9/1/16.
+ * 此类为简化表单输入,主要功能分为几块:
+ * 1:支持右侧自定义控件扩展(添加文字,验证码等)
+ * 2:支持自定义条件匹配(长度,长度区间,以及条件扩展)
+ *   2.1:sv_validatorValue:用作条件信息输入,比如length 则输入length:4 range则为:rage:4-10
+ * 3:支持正则匹配(sv_patternValidator,支持预设部分正则(手机号,邮箱...),以及直接输入正则字符串方式生成.属性为:enum|string
+ *
+ * ValidatorObserver为多个EditLayout的操作类.负责动态监听信息是否匹配,以及主动匹配功能.并能获取未匹配时的预设异常信息.完全所有表单的信息检测逻辑
+ * @see ValidatorObserver
+ *
+ * 示例见:module app-> EditLayoutFragment
  */
 public class EditLayout extends LinearLayout {
     private static final String TAG = "EditLayout";
@@ -119,7 +130,6 @@ public class EditLayout extends LinearLayout {
     }
 
     public void setPatternValidator(int type){
-        Log.e(TAG,"setPatternValidator:"+type);
         PatternValidator validator;
         switch (type){
             case PATTERN_EMAIL:
@@ -158,8 +168,7 @@ public class EditLayout extends LinearLayout {
                 int[] data= (int[]) obj;
                 index *= STYLE_NUM_ENTRIES;
                 final int type = data[index];
-                if (type >= TypedValue.TYPE_FIRST_INT
-                        && type <= TypedValue.TYPE_LAST_INT) {
+                if (type >= TypedValue.TYPE_FIRST_INT && type <= TypedValue.TYPE_LAST_INT) {
                     attrType=TypedValue.TYPE_INT_HEX;
                 } else if (type == TypedValue.TYPE_STRING) {
                     attrType=TypedValue.TYPE_STRING;
