@@ -447,31 +447,30 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="SearchView">
-        <attr name="sv_hintDrawable" format="reference"/>
-        <attr name="sv_searchHint" format="string"/>
-        <attr name="sv_searchText" format="string"/>
-        <attr name="sv_searchHintTextColor" format="color"/>
-        <attr name="sv_searchTextColor" format="color"/>
-        <attr name="sv_searchTextSize" format="dimension"/>
-        <attr name="sv_searchDeleteDrawable" format="reference"/>
-        <attr name="sv_editPadding" format="dimension" />
-    </declare-styleable>
-
-    <declare-styleable name="DeleteEditText">
-        <attr name="dt_deleteDrawable" format="reference"/>
-        <attr name="dt_deleteDrawableWidth" format="dimension"/>
-        <attr name="dt_drawableRightPadding" format="dimension"/>
-        <attr name="dt_deleteDrawableHeight" format="dimension"/>
-        <attr name="dt_drawableCenterOffset" format="dimension"/>
-    </declare-styleable>
-
     <declare-styleable name="EditLayout">
-        <attr name="el_itemPadding" format="dimension"/>
-        <attr name="el_textColor" format="color"/>
-        <attr name="el_textSize" format="dimension"/>
-        <attr name="el_itemDivideSize" format="dimension"/>
-        <attr name="el_itemDivideDrawable" format="reference"/>
+        <attr name="sv_hintDrawable" format="reference"/>
+        <attr name="sv_editHint" format="string"/>
+        <attr name="sv_editText" format="string"/>
+        <attr name="sv_editHintTextColor" format="color"/>
+        <attr name="sv_editTextColor" format="color"/>
+        <attr name="sv_editTextSize" format="dimension"/>
+        <attr name="sv_editErrorTextColor" format="color"/>
+        <attr name="sv_editDeleteDrawable" format="reference"/>
+        <attr name="sv_editPadding" format="dimension" />
+        <attr name="sv_editError" format="string"/>
+        <attr name="sv_validatorValue" format="string"/>
+        <attr name="sv_validator" >
+            <flag name="not_empty" value="0x01"/>
+            <flag name="length" value="0x02"/>
+            <flag name="range" value="0x04"/>
+        </attr>
+        <attr name="sv_patternValidator" format="enum|string">
+            <enum name="character" value="0x01"/>
+            <enum name="email" value="0x02"/>
+            <enum name="number" value="0x03"/>
+            <enum name="phone" value="0x04"/>
+            <enum name="web_url" value="0x05"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="WidgetAttr">

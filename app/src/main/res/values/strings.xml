@@ -78,4 +78,12 @@
     <string name="sub_item">Sub Item</string>
     <string name="any_thing">AnyThing</string>
     <string name="center_offset">CenterOffset</string>
+    <string name="check">Check</string>
+    <string name="input_length_error">Input length error</string>
+    <string name="input_not_in_range">Input not in range</string>
+    <string name="input_not_phone">Not phone number</string>
+    <string name="clear">Clear</string>
+    <string name="patter_text1">匹配长度大于4</string>
+    <string name="patter_text2">匹配长度大于4小于10,且为数字</string>
+    <string name="patter_text3">匹配是否为电话号码</string>
 </resources>

@@ -41,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new Item("TimeDownView", "com.cz.app.ui.TimeViewFragment", ""));
         items.add(new Item("BothTextView", "com.cz.app.ui.BothTextViewFragment", ""));
         items.add(new Item("BothTextView", "com.cz.app.ui.BothTextViewFragment", ""));
-        items.add(new Item("DeleteEditText", "com.cz.app.ui.DeleteSearchViewFragment", ""));
-        items.add(new Item("SearchView", "com.cz.app.ui.SearchViewFragment", ""));
+        items.add(new Item("EditLayout", "com.cz.app.ui.EditLayoutFragment", ""));
         recyclerView.setAdapter(new SimpleAdapter(this, items));
         recyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override

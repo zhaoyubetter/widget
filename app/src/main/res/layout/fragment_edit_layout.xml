@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patter_text1"/>
+
+    <com.cz.library.widget.EditLayout
+        android:id="@+id/sv_edit_view1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        auto:sv_editTextColor="@color/colorAccent"
+        auto:sv_editTextSize="14dp"
+        android:background="@color/colorPrimary"
+        auto:sv_hintDrawable="@drawable/abc_ic_search_api_mtrl_alpha"
+        auto:sv_validator="length"
+        auto:sv_editError="@string/input_length_error"
+        auto:sv_validatorValue="length:4"
+        auto:sv_editDeleteDrawable="@drawable/abc_ic_clear_mtrl_alpha_filter">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/article_flag1"
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center_vertical"/>
+        </com.cz.library.widget.EditLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patter_text2"/>
+
+    <com.cz.library.widget.EditLayout
+        android:id="@+id/sv_edit_view2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        auto:sv_editTextColor="@color/colorAccent"
+        auto:sv_editTextSize="14dp"
+        auto:sv_editError="@string/input_not_in_range"
+        auto:sv_validator="range"
+        auto:sv_validatorValue="range:4-10"
+        auto:sv_patternValidator="\\d+"
+        android:background="@color/colorPrimary"
+        auto:sv_hintDrawable="@drawable/abc_ic_search_api_mtrl_alpha"
+        auto:sv_editDeleteDrawable="@drawable/abc_ic_clear_mtrl_alpha_filter">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:text="Code"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_gravity="center_vertical"/>
+    </com.cz.library.widget.EditLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patter_text3"/>
+
+    <com.cz.library.widget.EditLayout
+        android:id="@+id/sv_edit_view3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        auto:sv_patternValidator="phone"
+        auto:sv_editError="@string/input_not_phone"
+        auto:sv_editTextColor="@color/colorAccent"
+        auto:sv_editTextSize="14dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@color/colorPrimary"
+        auto:sv_editDeleteDrawable="@drawable/abc_ic_clear_mtrl_alpha_filter"/>
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/clear"/>
+        <Button
+            android:id="@+id/btn_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/check"/>
+
+    </LinearLayout>
+</LinearLayout>
