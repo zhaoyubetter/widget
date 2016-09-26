@@ -26,6 +26,7 @@ import com.cz.library.widget.validator.impl.LengthValidator;
 import com.cz.library.widget.validator.impl.NotEmptyValidator;
 import com.cz.library.widget.validator.impl.pattern.CharacterValidator;
 import com.cz.library.widget.validator.impl.pattern.EmailValidator;
+import com.cz.library.widget.validator.impl.pattern.IdValidator;
 import com.cz.library.widget.validator.impl.pattern.NumberValidator;
 import com.cz.library.widget.validator.impl.pattern.PatternValidator;
 import com.cz.library.widget.validator.impl.pattern.PatternValueValidator;
@@ -42,7 +43,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * Created by cz on 9/1/16.
+ * Created by cz on 24/9/16.
  * 此类为简化表单输入,主要功能分为几块:
  * 1:支持右侧自定义控件扩展(添加文字,验证码等)
  * 2:支持自定义条件匹配(长度,长度区间,以及条件扩展)
@@ -60,12 +61,12 @@ public class EditLayout extends LinearLayout {
     public static final int VALIDATOR_NOT_EMPTY=0x01<<0;
     public static final int VALIDATOR_LENGTH=0x01<<1;
     public static final int VALIDATOR_RANGE=0x01<<2;
-
-    public static final int PATTERN_CHARACTER=0x01;
-    public static final int PATTERN_EMAIL=0x02;
-    public static final int PATTERN_NUMBER=0x03;
-    public static final int PATTERN_PHONE=0x04;
-    public static final int PATTERN_WEB_URL=0x05;
+    public static final int PATTERN_CHARACTER=0x01<<3;
+    public static final int PATTERN_EMAIL=0x01<<4;
+    public static final int PATTERN_NUMBER=0x01<<5;
+    public static final int PATTERN_PHONE=0x01<<6;
+    public static final int PATTERN_WEB_URL=0x01<<7;
+    public static final int PATTERN_ID=0x01<<8;
 
     static final int STYLE_NUM_ENTRIES = 6;
     private static final HashMap<String,Integer> validatorFlags;
@@ -79,7 +80,7 @@ public class EditLayout extends LinearLayout {
 
     private final List<Validator> validatorItems;
     private final SparseArray<String> validatorItemValues;
-    private PatternValidator patternValidator;
+    private OnFocusChangeListener onFocusChangeListener;
     private ImageView hintView;
     private EditText editor;
     private ImageView deleteView;
@@ -116,45 +117,25 @@ public class EditLayout extends LinearLayout {
         setEditTextSize(a.getDimensionPixelSize(R.styleable.EditLayout_sv_editTextSize,0));
         setSearchDeleteDrawable(a.getDrawable(R.styleable.EditLayout_sv_editDeleteDrawable));
         setEditPadding((int) a.getDimension(R.styleable.EditLayout_sv_editPadding,0));
-        int attrType = getAttrType(a, R.styleable.EditLayout_sv_patternValidator);
         setEditErrorTextColor(a.getColor(R.styleable.EditLayout_sv_editErrorTextColor,Color.RED));
         setEditError(a.getString(R.styleable.EditLayout_sv_editError));
         setEditValidatorValue(a.getString(R.styleable.EditLayout_sv_validatorValue));
         setEditValidator(a.getInt(R.styleable.EditLayout_sv_validator,VALIDATOR_NOT_EMPTY));
-        if(TypedValue.TYPE_INT_HEX==attrType){
-            setPatternValidator(a.getInt(R.styleable.EditLayout_sv_patternValidator,PATTERN_CHARACTER));
-        } else if(TypedValue.TYPE_STRING==attrType){
-            setPatternValidator(a.getString(R.styleable.EditLayout_sv_patternValidator));
-        }
+        setPatternValidator(a.getString(R.styleable.EditLayout_sv_patternValidator));
         a.recycle();
     }
 
-    public void setPatternValidator(int type){
-        PatternValidator validator;
-        switch (type){
-            case PATTERN_EMAIL:
-                validator=new EmailValidator();
-                break;
-            case PATTERN_NUMBER:
-                validator=new NumberValidator();
-                break;
-            case PATTERN_PHONE:
-                validator=new PhoneValidator();
-                break;
-            case PATTERN_WEB_URL:
-                validator=new WebUrlValidator();
-                break;
-            case PATTERN_CHARACTER:
-                default:
-                    validator=new CharacterValidator();
-                break;
-        }
-        this.patternValidator=validator;
-    }
+
 
     private void setPatternValidator(String patternValue) {
-        Log.e(TAG,"setPatternValidator:"+patternValue);
-        this.patternValidator=new PatternValueValidator(patternValue);
+        if(!TextUtils.isEmpty(patternValue)){
+            String[] patternArray = patternValue.split("\\s+");
+            if(null!=patternArray){
+                for(int i=0;i<patternArray.length;i++){
+                    this.validatorItems.add(new PatternValueValidator(patternArray[i]));
+                }
+            }
+        }
     }
 
     private int getAttrType(TypedArray typedArray,int index){
@@ -195,6 +176,15 @@ public class EditLayout extends LinearLayout {
                 }
             }
         });
+        editor.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                hintView.setSelected(b);
+                if(null!=onFocusChangeListener){
+                    onFocusChangeListener.onFocusChange(view,b);
+                }
+            }
+        });
         editor.addTextChangedListener(new TextWatcher() {
             private CharSequence lastItem = null;
 
@@ -215,6 +205,10 @@ public class EditLayout extends LinearLayout {
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    public void setOnFocusChangeListener(OnFocusChangeListener listener){
+        this.onFocusChangeListener=listener;
     }
 
     public void setHintDrawableResource(@DrawableRes int res) {
@@ -255,7 +249,7 @@ public class EditLayout extends LinearLayout {
         editor.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
     }
 
-    public void setSearchInputType(int inputType){
+    public void setEditInputType(int inputType){
         editor.setInputType(inputType);
     }
 
@@ -290,6 +284,24 @@ public class EditLayout extends LinearLayout {
                 }
             }
         }
+        if(flag==(PATTERN_EMAIL|flag)){
+            validatorItems.add(new EmailValidator());
+        }
+        if(flag==(PATTERN_NUMBER|flag)){
+            validatorItems.add(new NumberValidator());
+        }
+        if(flag==(PATTERN_PHONE|flag)){
+            validatorItems.add(new PhoneValidator());
+        }
+        if(flag==(PATTERN_WEB_URL|flag)){
+            validatorItems.add(new WebUrlValidator());
+        }
+        if(flag==(PATTERN_CHARACTER|flag)){
+            validatorItems.add(new CharacterValidator());
+        }
+        if(flag==(PATTERN_ID|flag)){
+            validatorItems.add(new IdValidator());
+        }
     }
 
     private void setEditValidatorValue(String value) {
@@ -315,20 +327,23 @@ public class EditLayout extends LinearLayout {
     }
 
     public boolean isValid(){
-        boolean result=true;
         Editable text = getText();
-        //常规条件匹配
+        boolean result=true;
+        boolean patternMatches=false;
         for(int i=0;i<validatorItems.size();i++){
             Validator validator = validatorItems.get(i);
-            if(!(result&=validator.validator(text))){
+            if(!patternMatches&&validator instanceof PatternValidator){
+                //正则匹配对象,任一正则匹配成功返回
+                if(patternMatches^=validator.validator(text)){
+                    continue;
+                }
+            } else if(!(result&=validator.validator(text))){
+                //条件匹配对象
                 break;
             }
         }
-        //正则匹配条件
-        if(result&&null!=patternValidator){
-            result&=patternValidator.validator(text);
-        }
-        return result;
+        //返回条件匹配与正则匹配结果
+        return result&patternMatches;
     }
 
     public EditText getEditor(){

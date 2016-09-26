@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         items.add(new Item("BothTextView", "com.cz.app.ui.BothTextViewFragment", ""));
         items.add(new Item("BothTextView", "com.cz.app.ui.BothTextViewFragment", ""));
         items.add(new Item("EditLayout", "com.cz.app.ui.EditLayoutFragment", ""));
+        items.add(new Item("DialView", "com.cz.app.ui.DialViewFragment", ""));
         recyclerView.setAdapter(new SimpleAdapter(this, items));
         recyclerView.setOnItemClickListener(new OnItemClickListener() {
             @Override

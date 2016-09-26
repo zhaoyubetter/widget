@@ -459,18 +459,28 @@
         <attr name="sv_editPadding" format="dimension" />
         <attr name="sv_editError" format="string"/>
         <attr name="sv_validatorValue" format="string"/>
+        <attr name="sv_patternValidator" format="string"/>
         <attr name="sv_validator" >
             <flag name="not_empty" value="0x01"/>
             <flag name="length" value="0x02"/>
             <flag name="range" value="0x04"/>
+            <flag name="character" value="0x08"/>
+            <flag name="email" value="0x10"/>
+            <flag name="number" value="0x20"/>
+            <flag name="phone" value="0x40"/>
+            <flag name="web_url" value="0x80"/>
+            <flag name="id" value="0x100"/>
         </attr>
-        <attr name="sv_patternValidator" format="enum|string">
-            <enum name="character" value="0x01"/>
-            <enum name="email" value="0x02"/>
-            <enum name="number" value="0x03"/>
-            <enum name="phone" value="0x04"/>
-            <enum name="web_url" value="0x05"/>
-        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="DialView">
+        <attr name="dv_paintColor" format="color"/>
+        <attr name="dv_strokeWidth" format="dimension"/>
+        <attr name="dv_dialPadding" format="dimension"/>
+        <attr name="dv_dialInnerPadding" format="dimension"/>
+        <attr name="dv_dialProgressDrawable" format="reference"/>
+        <attr name="dv_dialItemIntervalDegrees" format="integer"/>
+        <attr name="dv_dialItemCount" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="WidgetAttr">
