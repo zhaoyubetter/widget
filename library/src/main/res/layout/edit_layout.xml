@@ -24,6 +24,7 @@
         android:gravity="left|center_vertical"
         android:background="@color/transparent"
         android:layout_height="match_parent"
+        android:inputType="text"
         android:singleLine="true"/>
 
     <ImageView

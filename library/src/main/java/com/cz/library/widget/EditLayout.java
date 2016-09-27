@@ -1,14 +1,17 @@
 package com.cz.library.widget;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -17,13 +20,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.cz.library.R;
 import com.cz.library.widget.validator.Validator;
 import com.cz.library.widget.validator.ValidatorObserver;
 import com.cz.library.widget.validator.impl.LengthValidator;
 import com.cz.library.widget.validator.impl.NotEmptyValidator;
+import com.cz.library.widget.validator.impl.RangeValidator;
 import com.cz.library.widget.validator.impl.pattern.CharacterValidator;
 import com.cz.library.widget.validator.impl.pattern.EmailValidator;
 import com.cz.library.widget.validator.impl.pattern.IdValidator;
@@ -31,7 +34,6 @@ import com.cz.library.widget.validator.impl.pattern.NumberValidator;
 import com.cz.library.widget.validator.impl.pattern.PatternValidator;
 import com.cz.library.widget.validator.impl.pattern.PatternValueValidator;
 import com.cz.library.widget.validator.impl.pattern.PhoneValidator;
-import com.cz.library.widget.validator.impl.RangeValidator;
 import com.cz.library.widget.validator.impl.pattern.WebUrlValidator;
 
 import java.lang.reflect.Field;
@@ -55,7 +57,7 @@ import java.util.regex.Pattern;
  *
  * 示例见:module app-> EditLayoutFragment
  */
-public class EditLayout extends LinearLayout {
+public class EditLayout extends DivideLinearLayout {
     private static final String TAG = "EditLayout";
 
     public static final int VALIDATOR_NOT_EMPTY=0x01<<0;
@@ -67,6 +69,11 @@ public class EditLayout extends LinearLayout {
     public static final int PATTERN_PHONE=0x01<<6;
     public static final int PATTERN_WEB_URL=0x01<<7;
     public static final int PATTERN_ID=0x01<<8;
+
+    public static final int INPUT_NUMBER=0x01;
+    public static final int INPUT_TEXT=0x02;
+    public static final int INPUT_NUMBER_PASSWORD=0x03;
+    public static final int INPUT_TEXT_PASSWORD=0x04;
 
     static final int STYLE_NUM_ENTRIES = 6;
     private static final HashMap<String,Integer> validatorFlags;
@@ -87,18 +94,16 @@ public class EditLayout extends LinearLayout {
     private int errorTextColor;
     private OnTextChangeListener listener;
     private String editError;
+    private String emptyError;
+    private String errorInfo;
     private int textColor;
 
     public EditLayout(Context context) {
-        this(context,null,0);
+        this(context,null);
     }
 
     public EditLayout(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
-    }
-
-    public EditLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         inflate(context, R.layout.edit_layout, this);
         setGravity(Gravity.CENTER_VERTICAL);
 
@@ -117,14 +122,17 @@ public class EditLayout extends LinearLayout {
         setEditTextSize(a.getDimensionPixelSize(R.styleable.EditLayout_sv_editTextSize,0));
         setSearchDeleteDrawable(a.getDrawable(R.styleable.EditLayout_sv_editDeleteDrawable));
         setEditPadding((int) a.getDimension(R.styleable.EditLayout_sv_editPadding,0));
-        setEditErrorTextColor(a.getColor(R.styleable.EditLayout_sv_editErrorTextColor,Color.RED));
+        setEditErrorTextColor(a.getColor(R.styleable.EditLayout_sv_editErrorTextColor,NO_ID));
         setEditError(a.getString(R.styleable.EditLayout_sv_editError));
+        setEditEmptyError(a.getString(R.styleable.EditLayout_sv_editEmptyError));
         setEditValidatorValue(a.getString(R.styleable.EditLayout_sv_validatorValue));
         setEditValidator(a.getInt(R.styleable.EditLayout_sv_validator,VALIDATOR_NOT_EMPTY));
         setPatternValidator(a.getString(R.styleable.EditLayout_sv_patternValidator));
+        setEditInputType(a.getInt(R.styleable.EditLayout_sv_editInputType, INPUT_TEXT));
+        setEditMaxLength(a.getInteger(R.styleable.EditLayout_sv_editMaxLength, Short.MAX_VALUE));
+        setEditMaxLine(a.getInteger(R.styleable.EditLayout_sv_editMaxLine,1));
         a.recycle();
     }
-
 
 
     private void setPatternValidator(String patternValue) {
@@ -194,9 +202,14 @@ public class EditLayout extends LinearLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //标记异常颜色
+                if(NO_ID!=errorTextColor){
+                    Log.e(TAG,"onTextChanged:"+isValid());
+                    editor.setTextColor(isValid()?textColor:errorTextColor);
+                }
                 deleteView.setVisibility(TextUtils.isEmpty(editor.getText()) ? View.GONE : View.VISIBLE);
                 if (null != listener) {
-                    listener.onTextChanged(s, lastItem,count);
+                    listener.onTextChanged(s, lastItem, count);
                 }
                 lastItem = s;
             }
@@ -250,16 +263,49 @@ public class EditLayout extends LinearLayout {
     }
 
     public void setEditInputType(int inputType){
-        editor.setInputType(inputType);
+        switch (inputType){
+            case INPUT_NUMBER:
+            case INPUT_NUMBER_PASSWORD:
+                editor.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
+                break;
+            case INPUT_TEXT:
+            case INPUT_TEXT_PASSWORD:
+                default:
+                editor.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+        }
+        setEditPasswordTransformation(INPUT_NUMBER == inputType || INPUT_TEXT == inputType);
+    }
+
+    public void setEditPasswordTransformation(boolean show){
+        if (show) {
+            editor.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            editor.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
     }
 
     public void setEditPadding(int padding) {
-        editor.setPadding(padding,0,padding,0);
+        editor.setPadding(padding, 0, padding, 0);
     }
 
     public void setEditError(String text) {
+        Log.e(TAG,"text:"+text);
         this.editError=text;
     }
+
+    public void setEditEmptyError(String emptyError) {
+        this.emptyError=emptyError;
+    }
+
+    public void setEditMaxLength(int maxLength) {
+        editor.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
+    }
+
+    public void setEditMaxLine(int maxLine) {
+        editor.setMaxLines(maxLine);
+    }
+
 
     private void setEditValidator(int flag) {
         validatorItems.clear();
@@ -323,17 +369,19 @@ public class EditLayout extends LinearLayout {
     }
 
     public String getEditError(){
-        return editError;
+        return errorInfo;
     }
 
     public boolean isValid(){
         Editable text = getText();
         boolean result=true;
+        boolean patternResult=false;
         boolean patternMatches=false;
         for(int i=0;i<validatorItems.size();i++){
             Validator validator = validatorItems.get(i);
             if(!patternMatches&&validator instanceof PatternValidator){
                 //正则匹配对象,任一正则匹配成功返回
+                patternResult=true;
                 if(patternMatches^=validator.validator(text)){
                     continue;
                 }
@@ -342,8 +390,16 @@ public class EditLayout extends LinearLayout {
                 break;
             }
         }
+        //非空判断
+        if(!result){
+            if(TextUtils.isEmpty(text)&&!TextUtils.isEmpty(emptyError)){
+                errorInfo=emptyError;
+            } else {
+                errorInfo=editError;
+            }
+        }
         //返回条件匹配与正则匹配结果
-        return result&patternMatches;
+        return result&(patternMatches|!patternResult);
     }
 
     public EditText getEditor(){

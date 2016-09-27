@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
-version = "1.1.1"
+version = "1.1.4"
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -91,7 +91,6 @@ bintray {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-annotations:23.1.1'
     compile 'com.android.support:support-annotations:23.2.0'
     compile 'com.android.support:support-v4:23.2.0'
 }

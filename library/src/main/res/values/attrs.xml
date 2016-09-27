@@ -458,6 +458,7 @@
         <attr name="sv_editDeleteDrawable" format="reference"/>
         <attr name="sv_editPadding" format="dimension" />
         <attr name="sv_editError" format="string"/>
+        <attr name="sv_editEmptyError" format="string"/>
         <attr name="sv_validatorValue" format="string"/>
         <attr name="sv_patternValidator" format="string"/>
         <attr name="sv_validator" >
@@ -471,6 +472,14 @@
             <flag name="web_url" value="0x80"/>
             <flag name="id" value="0x100"/>
         </attr>
+        <attr name="sv_editInputType">
+            <enum name="number" value="0x01"/>
+            <enum name="text" value="0x02"/>
+            <enum name="number_password" value="0x03"/>
+            <enum name="text_password" value="0x04"/>
+        </attr>
+        <attr name="sv_editMaxLength" format="integer"/>
+        <attr name="sv_editMaxLine" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="DialView">
