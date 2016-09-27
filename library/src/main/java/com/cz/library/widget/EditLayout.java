@@ -204,7 +204,6 @@ public class EditLayout extends DivideLinearLayout {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //标记异常颜色
                 if(NO_ID!=errorTextColor){
-                    Log.e(TAG,"onTextChanged:"+isValid());
                     editor.setTextColor(isValid()?textColor:errorTextColor);
                 }
                 deleteView.setVisibility(TextUtils.isEmpty(editor.getText()) ? View.GONE : View.VISIBLE);
