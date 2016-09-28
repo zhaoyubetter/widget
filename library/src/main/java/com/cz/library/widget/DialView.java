@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -20,20 +21,28 @@ import com.cz.library.R;
  */
 public class DialView extends View{
     private static final String TAG = "DialView";
-    private final boolean DEBUG=true;
+    private final boolean DEBUG=false;
     private final Paint paint;
+    private final Paint textPaint;
     private final Path path;
+    private final Path textPath;
     private float dialPadding;
 
     private float[] pos;
     private float[] tan;
     private PathMeasure pathMeasure;
+    private PathMeasure textPathMeasure;
     private Drawable progressDrawable;
     private RectF arcRect;
-    private float dialInnerPadding;
+    private Rect textRect;
+    private float dialInnerPadding1;
+    private float dialInnerPadding2;
+    private int intervalItemCount;
     private float fraction;
     private int itemIntervalDegrees;
     private int itemCount;
+
+    private final int  textBottomPadding=20;
 
     public DialView(Context context) {
         this(context,null,0);
@@ -46,7 +55,11 @@ public class DialView extends View{
     public DialView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setTextSize(20);
+        textRect=new Rect();
         path=new Path();
+        textPath=new Path();
         pos=new float[2];
         tan=new float[2];
 
@@ -55,10 +68,17 @@ public class DialView extends View{
         setPaintColor(a.getColor(R.styleable.DialView_dv_paintColor, Color.WHITE));
         setDialPadding(a.getDimension(R.styleable.DialView_dv_dialPadding,0));
         setDialProgressDrawable(a.getDrawable(R.styleable.DialView_dv_dialProgressDrawable));
-        setDialInnerPadding(a.getDimension(R.styleable.DialView_dv_dialInnerPadding,0));
-        setDialItemIntervalDegrees(a.getInteger(R.styleable.DialView_dv_dialItemIntervalDegrees,4));
+        setDialInnerPadding1(a.getDimension(R.styleable.DialView_dv_dialInnerPadding1,0));
+        setDialInnerPadding2(a.getDimension(R.styleable.DialView_dv_dialInnerPadding2,0));
+        setDialItemIntervalDegrees(a.getInteger(R.styleable.DialView_dv_dialItemIntervalDegrees,2));
+        setDialIntervalItemCount(a.getInteger(R.styleable.DialView_dv_dialIntervalItemCount,7));
         setDialItemCount(a.getInteger(R.styleable.DialView_dv_dialItemCount,5));
         a.recycle();
+    }
+
+    public void setDialIntervalItemCount(int itemCount) {
+        this.intervalItemCount=itemCount;
+        invalidate();
     }
 
     private void setDialItemCount(int count) {
@@ -71,8 +91,13 @@ public class DialView extends View{
         invalidate();
     }
 
-    public void setDialInnerPadding(float padding) {
-        this.dialInnerPadding=padding;
+    public void setDialInnerPadding1(float padding) {
+        this.dialInnerPadding1=padding;
+        invalidate();
+    }
+
+    public void setDialInnerPadding2(float padding) {
+        this.dialInnerPadding2=padding;
         invalidate();
     }
 
@@ -103,12 +128,15 @@ public class DialView extends View{
         int width = getWidth();
         int height = getHeight();
         float radius = Math.max(width, height)/2-dialPadding;
-        path.addCircle(width/2,height,radius, Path.Direction.CW);
+        path.addCircle(width/2,height-textBottomPadding,radius, Path.Direction.CW);
         pathMeasure=new PathMeasure(path, false);
 
-        float padding = dialPadding + dialInnerPadding;
-        float startY=height-radius+padding;
-        arcRect=new RectF(padding,startY,width-padding,startY+radius*2);
+        textPath.addCircle(width/2,height-textBottomPadding,radius-dialPadding-dialInnerPadding1-dialInnerPadding2,Path.Direction.CCW);
+        textPathMeasure=new PathMeasure(textPath,false);
+        float startY=height-radius+dialInnerPadding1;
+        float padding = dialPadding + dialInnerPadding1;
+        arcRect=new RectF(padding,startY-textBottomPadding,width-padding,startY+(radius-dialInnerPadding1)*2-textBottomPadding);
+
     }
 
     public void setProgress(float fraction){
@@ -116,14 +144,22 @@ public class DialView extends View{
         invalidate();
     }
 
+    public void setRotateDegrees(int degrees){
+        this.rotateDegrees=degrees;
+        invalidate();
+    }
+    private int rotateDegrees;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        long st = System.currentTimeMillis();
         int width = getWidth();
         int height = getHeight();
+        paint.setColor(Color.WHITE);
         canvas.drawPath(path,paint);
-        float length = pathMeasure.getLength();
-        pathMeasure.getPosTan(length/2+fraction*length/2,pos,tan);
+        float radius = Math.max(width, height)/2-dialPadding;
+        float halfLength = pathMeasure.getLength()/2;
+        pathMeasure.getPosTan(halfLength+fraction*halfLength,pos,tan);
         float degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
         if(null!=progressDrawable){
             canvas.save();
@@ -134,18 +170,56 @@ public class DialView extends View{
             progressDrawable.draw(canvas);
             canvas.restore();
         }
-
-        int startDegrees=90;
-        int itemDegrees=(180-itemIntervalDegrees*itemCount)/itemCount;
-        for(int i=0;i<itemCount;i++){
-            canvas.drawArc(arcRect,startDegrees+itemIntervalDegrees,itemDegrees,false,paint);
-            startDegrees+=itemDegrees;
+        int startDegrees=180+itemIntervalDegrees/2;
+        int itemDegrees=(180-itemIntervalDegrees*(itemCount-1))/(itemCount-1);
+        for(int i=0;i<itemCount-1;i++){
+            canvas.drawArc(arcRect,startDegrees,itemDegrees,false,paint);
+            startDegrees+=itemDegrees+itemIntervalDegrees;
         }
 
+        int totalItemCount=intervalItemCount*(itemCount-1);
+        float itemFraction=1f/totalItemCount;
+        float strokeWidth = paint.getStrokeWidth();
+        for(int i=0;i<=totalItemCount;i++){
+            pathMeasure.getPosTan(halfLength+i*itemFraction*halfLength,pos,tan);
+            degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
+            canvas.save();
+            canvas.rotate(degrees,pos[0],pos[1]);
+            canvas.translate(0 ,dialInnerPadding1+dialInnerPadding2+strokeWidth/2);
+            canvas.drawLine(pos[0],pos[1]-(0==i%intervalItemCount?10:0),pos[0],pos[1]+10,paint);
+            canvas.restore();
+        }
+
+        //draw level;
+        halfLength=textPathMeasure.getLength()/2;
+        textPaint.setTextSize(20);
+        for(int i=0;i<itemCount;i++){
+            String text = String.valueOf(i*100);
+            float textWidth = textPaint.measureText(text, 0, text.length());
+            textPaint.getTextBounds(text, 0, text.length(),textRect);
+            canvas.drawTextOnPath(text, textPath, textWidth/2+i*(halfLength/(itemCount-1)), textRect.height(), textPaint);
+        }
+
+        //draw note
+//        (height-(textPaint.descent() + textPaint.ascent()))/2
+        String value="信用中等";
+        textPaint.setTextSize(40);
+        float textWidth = textPaint.measureText(value, 0, value.length());
+        canvas.drawText(value,(width-textWidth)/2,-(textPaint.descent()+ textPaint.ascent())+(height-radius)+radius/2,textPaint);
+        //draw value
+        value=String.valueOf(500);
+        textPaint.setTextSize(50);
+        textWidth = textPaint.measureText(value, 0, value.length());
+        textPaint.getTextBounds(value, 0, value.length(),textRect);
+        canvas.drawText(value,(width-textWidth)/2,(height-textPaint.descent()- textPaint.ascent())-textRect.height()-textBottomPadding,textPaint);
+
         if(DEBUG){
-            int radius = Math.max(width, height)/2;
+            radius = Math.max(width, height)/2;
             canvas.drawLine(0,height-radius,width,height-radius,paint);
             canvas.drawLine(width/2,0,width/2,height,paint);
         }
+
+        Log.e(TAG,"time:"+(System.currentTimeMillis()-st));
     }
+
 }

@@ -1,3 +1,4 @@
 <resources>
     <dimen name="divideSize">0.4dp</dimen>
+    <dimen name="cardview_compat_inset_shadow">2dp</dimen>
 </resources>
