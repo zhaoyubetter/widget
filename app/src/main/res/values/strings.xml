@@ -87,4 +87,5 @@
     <string name="patter_text2">匹配长度大于4小于10,且为数字</string>
     <string name="patter_text3">匹配是否为电话号码</string>
     <string name="progress_value">当前进度</string>
+    <string name="shadow_text_view">ShadowTextView</string>
 </resources>
