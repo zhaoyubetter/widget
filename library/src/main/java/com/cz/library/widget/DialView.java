@@ -21,7 +21,7 @@ import com.cz.library.R;
  */
 public class DialView extends View{
     private static final String TAG = "DialView";
-    private final boolean DEBUG=false;
+    private final boolean DEBUG=true;
     private final Paint paint;
     private final Paint textPaint;
     private final Path path;
@@ -131,7 +131,7 @@ public class DialView extends View{
         path.addCircle(width/2,height-textBottomPadding,radius, Path.Direction.CW);
         pathMeasure=new PathMeasure(path, false);
 
-        textPath.addCircle(width/2,height-textBottomPadding,radius-dialPadding-dialInnerPadding1-dialInnerPadding2,Path.Direction.CCW);
+        textPath.addCircle(width/2,height-textBottomPadding,radius-dialPadding-dialInnerPadding1-dialInnerPadding2,Path.Direction.CW);
         textPathMeasure=new PathMeasure(textPath,false);
         float startY=height-radius+dialInnerPadding1;
         float padding = dialPadding + dialInnerPadding1;
@@ -194,10 +194,15 @@ public class DialView extends View{
         halfLength=textPathMeasure.getLength()/2;
         textPaint.setTextSize(20);
         for(int i=0;i<itemCount;i++){
-            String text = String.valueOf(i*100);
+            String text = String.valueOf((i+1)*100);
             float textWidth = textPaint.measureText(text, 0, text.length());
+            textPathMeasure.getPosTan(textWidth/2,pos,tan);
+            degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
             textPaint.getTextBounds(text, 0, text.length(),textRect);
-            canvas.drawTextOnPath(text, textPath, textWidth/2+i*(halfLength/(itemCount-1)), textRect.height(), textPaint);
+            canvas.save();
+            canvas.rotate(270-degrees,width/2,height-textBottomPadding);
+            canvas.drawTextOnPath(text, textPath,i*(halfLength/(itemCount-1)),textRect.height(), textPaint);
+            canvas.restore();
         }
 
         //draw note
