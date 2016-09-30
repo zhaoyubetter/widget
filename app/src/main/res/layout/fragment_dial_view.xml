@@ -8,15 +8,22 @@
 
     <com.cz.library.widget.DialView
         android:id="@+id/dv_view"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/colorPrimaryDark"
-        auto:dv_strokeWidth="4dp"
+        auto:dv_strokeWidth="0.8dp"
         auto:dv_dialPadding="12dp"
-        auto:dv_dialInnerPadding1="20dp"
+        auto:dv_dialInnerPadding1="12dp"
         auto:dv_dialInnerPadding2="20dp"
         auto:dv_dialProgressDrawable="@drawable/flag"
+        auto:dv_innerStrokeWidth1="4dp"
+        auto:dv_innerStrokeWidth2="2dp"
+        auto:dv_dialBottomPadding="12dp"
+        auto:dv_dialItemCount="7"
+        auto:dv_dialLevelText="信用良好"
+        auto:dv_minLevelValue="500"
+        auto:dv_maxLevelValue="1100"
         />
 
     <com.cz.app.widget.SeekLayout

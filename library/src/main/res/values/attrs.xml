@@ -485,6 +485,8 @@
     <declare-styleable name="DialView">
         <attr name="dv_paintColor" format="color"/>
         <attr name="dv_strokeWidth" format="dimension"/>
+        <attr name="dv_innerStrokeWidth1" format="dimension"/>
+        <attr name="dv_innerStrokeWidth2" format="dimension"/>
         <attr name="dv_dialPadding" format="dimension"/>
         <attr name="dv_dialInnerPadding1" format="dimension"/>
         <attr name="dv_dialInnerPadding2" format="dimension"/>
@@ -492,6 +494,13 @@
         <attr name="dv_dialItemIntervalDegrees" format="integer"/>
         <attr name="dv_dialItemCount" format="integer"/>
         <attr name="dv_dialIntervalItemCount" format="integer"/>
+        <attr name="dv_dialBottomPadding" format="dimension"/>
+        <attr name="dv_dialLevelText" format="string" />
+        <attr name="dv_levelTextSize" format="dimension"/>
+        <attr name="dv_levelInfoTextSize" format="dimension"/>
+        <attr name="dv_levelValueTextSize" format="dimension"/>
+        <attr name="dv_minLevelValue" format="integer"/>
+        <attr name="dv_maxLevelValue" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="CardTextView">
