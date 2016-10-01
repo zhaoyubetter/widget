@@ -1,5 +1,6 @@
 package com.cz.library.widget;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 public class DialView extends View{
     private static final String TAG = "DialView";
-    private final boolean DEBUG=true;
+    private final boolean DEBUG=false;
     private final Paint paint;
     private final Paint ringPaint;
     private final Paint textPaint;
@@ -51,11 +52,11 @@ public class DialView extends View{
     private int levelTextSize;
     private int levelInfoTextSize;
     private int levelValueTextSize;
-    private String levelText;
+    private CharSequence[] levelTextItems;
     private int currentLevelValue;
+    private float currentLevelDegrees;
     private int levelMinValue;
     private int levelMaxValue;
-    private float fraction;
     private int itemIntervalDegrees;
     private int itemCount;
 
@@ -81,6 +82,7 @@ public class DialView extends View{
         tan=new float[2];
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DialView);
+        setDialItemCount(a.getInteger(R.styleable.DialView_dv_dialItemCount,5));
         setStrokeWidth(a.getDimension(R.styleable.DialView_dv_strokeWidth,0));
         setInnerStrokeWidth1(a.getDimension(R.styleable.DialView_dv_innerStrokeWidth1,0));
         setInnerStrokeWidth2(a.getDimension(R.styleable.DialView_dv_innerStrokeWidth2,0));
@@ -91,10 +93,9 @@ public class DialView extends View{
         setDialInnerPadding2(a.getDimension(R.styleable.DialView_dv_dialInnerPadding2,0));
         setDialItemIntervalDegrees(a.getInteger(R.styleable.DialView_dv_dialItemIntervalDegrees,2));
         setDialIntervalItemCount(a.getInteger(R.styleable.DialView_dv_dialIntervalItemCount,7));
-        setDialItemCount(a.getInteger(R.styleable.DialView_dv_dialItemCount,5));
         setDialBottomPadding(a.getDimension(R.styleable.DialView_dv_dialBottomPadding,0));
 
-        setLevelText(a.getString(R.styleable.DialView_dv_dialLevelText));
+        setLevelTextArray(a.getTextArray(R.styleable.DialView_dv_dialLevelTextArray));
         setMinLevelValue(a.getInteger(R.styleable.DialView_dv_minLevelValue,0));
         setMaxLevelValue(a.getInteger(R.styleable.DialView_dv_maxLevelValue,100));
         setLevelTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,8)));
@@ -181,9 +182,13 @@ public class DialView extends View{
         invalidate();
     }
 
-    public void setLevelText(String text) {
-        this.levelText=text;
-        invalidate();
+    public void setLevelTextArray(CharSequence[] items) {
+        if(null==items||items.length!=itemCount){
+            throw new IllegalArgumentException("items's height must be the same as item count!");
+        } else {
+            this.levelTextItems=items;
+            invalidate();
+        }
     }
 
     public void setMinLevelValue(int minValue) {
@@ -195,6 +200,18 @@ public class DialView extends View{
     public void setMaxLevelValue(int maxValue) {
         this.levelMaxValue=maxValue;
         invalidate();
+    }
+
+    public int getMinLevelValue(){
+        return this.levelMinValue;
+    }
+
+    public int getMaxLevelValue(){
+        return this.levelMaxValue;
+    }
+
+    public int getCurrentLevelValue(){
+        return this.currentLevelValue;
     }
 
     @Override
@@ -216,98 +233,44 @@ public class DialView extends View{
 
     }
 
-    public void setProgress(float fraction){
-        this.fraction=fraction;
-        invalidate();
-    }
-
-    public void setRotateDegrees(int degrees){
-        this.rotateDegrees=degrees;
-        invalidate();
-    }
-
-    public void levelValueTo(int value){
+    public void setLevelValueTo(final int value){
         //current value->value
         if(levelMinValue<=value&&levelMaxValue>=value){
-
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(currentLevelValue, value);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    Integer value = Integer.valueOf(valueAnimator.getAnimatedValue().toString());
+                    currentLevelDegrees=(value-levelMinValue)*1.0f/(levelMaxValue-levelMinValue)*180;
+                    Log.e(TAG,"value:"+value+" max:"+levelMaxValue+" degrees:"+currentLevelDegrees);
+                    currentLevelValue=value;
+                    invalidate();
+                }
+            });
+            valueAnimator.start();
         }
     }
 
-    private int rotateDegrees;
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         long st = System.currentTimeMillis();
         int width = getWidth();
         int height = getHeight();
-        paint.setColor(Color.WHITE);
         canvas.drawPath(path,paint);
 
         float radius = Math.max(width, height)/2-dialPadding;
         float halfLength = pathMeasure.getLength()/2;
-        pathMeasure.getPosTan(halfLength+fraction*halfLength,pos,tan);
-        float degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
-        if(null!=progressDrawable){
-            canvas.save();
-            canvas.rotate(degrees,pos[0],pos[1]);
-            int halfDrawableWidth = progressDrawable.getIntrinsicWidth()/2;
-            int halfDrawableHeight = progressDrawable.getIntrinsicHeight()/2;
-            progressDrawable.setBounds((int)pos[0]-halfDrawableWidth,(int)pos[1]-halfDrawableHeight,(int)pos[0]+halfDrawableWidth,(int)pos[1]+halfDrawableHeight);
-            progressDrawable.draw(canvas);
-            canvas.restore();
-        }
-        int startDegrees=180+itemIntervalDegrees/2;
-        int itemDegrees=(180-itemIntervalDegrees*(itemCount-1))/(itemCount-1);
-        ringPaint.setStrokeWidth(innerStrokeWidth1);
-        for(int i=0;i<itemCount-1;i++){
-            canvas.drawArc(arcRect,startDegrees,itemDegrees,false,ringPaint);
-            startDegrees+=itemDegrees+itemIntervalDegrees;
-        }
 
-        int totalItemCount=intervalItemCount*(itemCount-1);
-        float itemFraction=1f/totalItemCount;
-        float strokeWidth = ringPaint.getStrokeWidth();
-        ringPaint.setStrokeWidth(innerStrokeWidth2);
-        for(int i=0;i<=totalItemCount;i++){
-            pathMeasure.getPosTan(halfLength+i*itemFraction*halfLength,pos,tan);
-            degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
-            canvas.save();
-            canvas.rotate(degrees,pos[0],pos[1]);
-            canvas.translate(0 ,dialInnerPadding1+dialInnerPadding2+strokeWidth/2);
-            canvas.drawLine(pos[0],pos[1]-(0==i%intervalItemCount?10:0),pos[0],pos[1]+10,ringPaint);
-            canvas.restore();
-        }
-
+        drawIndicatorDrawable(canvas, halfLength);
+        drawInnerRing(canvas);
+        drawRingItems(canvas, halfLength);
         //draw level;
-        if(levelMinValue!=levelMaxValue&&levelMaxValue-levelMinValue>itemCount) {
-            halfLength = textPathMeasure.getLength() / 2;
-            textPaint.setTextSize(levelTextSize);
-            int itemValue = (levelMaxValue - levelMinValue) / (itemCount-1);
-            for (int i = 0; i < itemCount; i++) {
-                String text = String.valueOf(levelMinValue+i * itemValue);
-                float textWidth = textPaint.measureText(text, 0, text.length());
-                textPathMeasure.getPosTan(textWidth / 2, pos, tan);
-                degrees = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
-                textPaint.getTextBounds(text.toString(), 0, text.length(), textRect);
-                canvas.save();
-                canvas.rotate(270 - degrees, width / 2, height - dialBottomPadding);
-                canvas.drawTextOnPath(text.toString(), textPath, i * (halfLength / (itemCount - 1)), textRect.height(), textPaint);
-                canvas.restore();
-            }
-        }
+        drawLevelItems(canvas, width, height);
         //draw note
-//        (height-(textPaint.descent() + textPaint.ascent()))/2
-        if(!TextUtils.isEmpty(levelText)){
-            textPaint.setTextSize(levelInfoTextSize);
-            float textWidth = textPaint.measureText(levelText, 0, levelText.length());
-            canvas.drawText(levelText,(width-textWidth)/2,-(textPaint.descent()+ textPaint.ascent())+(height-radius)+radius/2,textPaint);
-        }
+        drawLevelText(canvas, width, height, radius);
         //draw value
-        String value=String.valueOf(500);
-        textPaint.setTextSize(levelValueTextSize);
-        float textWidth = textPaint.measureText(value, 0, value.length());
-        textPaint.getTextBounds(value, 0, value.length(),textRect);
-        canvas.drawText(value,(width-textWidth)/2,(height-textPaint.descent()- textPaint.ascent())-textRect.height()- dialBottomPadding,textPaint);
+        drawLevelTextValue(canvas, width, height);
 
         if(DEBUG){
             radius = Math.max(width, height)/2;
@@ -318,5 +281,90 @@ public class DialView extends View{
 
         Log.e(TAG,"time:"+(System.currentTimeMillis()-st));
     }
+
+    private void drawIndicatorDrawable(Canvas canvas, float halfLength) {
+        if(null!=progressDrawable){
+            pathMeasure.getPosTan(halfLength+(currentLevelDegrees*1.0f/180)*halfLength,pos,tan);
+            float degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
+            canvas.save();
+            canvas.rotate(degrees,pos[0],pos[1]);
+            int halfDrawableWidth = progressDrawable.getIntrinsicWidth()/2;
+            int halfDrawableHeight = progressDrawable.getIntrinsicHeight()/2;
+            progressDrawable.setBounds((int)pos[0]-halfDrawableWidth,(int)pos[1]-halfDrawableHeight,(int)pos[0]+halfDrawableWidth,(int)pos[1]+halfDrawableHeight);
+            progressDrawable.draw(canvas);
+            canvas.restore();
+        }
+    }
+
+    private void drawInnerRing(Canvas canvas) {
+        int startDegrees=180+itemIntervalDegrees/2;
+        int itemDegrees=(180-itemIntervalDegrees*(itemCount-1))/(itemCount-1);
+        ringPaint.setStrokeWidth(innerStrokeWidth1);
+        for(int i=0;i<itemCount-1;i++){
+            canvas.drawArc(arcRect,startDegrees,itemDegrees,false,ringPaint);
+            startDegrees+=itemDegrees+itemIntervalDegrees;
+        }
+    }
+    private void drawRingItems(Canvas canvas, float halfLength) {
+        int totalItemCount=intervalItemCount*(itemCount-1);
+        float itemFraction=1f/totalItemCount;
+        float strokeWidth = ringPaint.getStrokeWidth();
+        ringPaint.setStrokeWidth(innerStrokeWidth2);
+        for(int i=0;i<=totalItemCount;i++){
+            pathMeasure.getPosTan(halfLength+i*itemFraction*halfLength,pos,tan);
+            float degrees =(float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
+            canvas.save();
+            canvas.rotate(degrees,pos[0],pos[1]);
+            canvas.translate(0 ,dialInnerPadding1+dialInnerPadding2+strokeWidth/2);
+            canvas.drawLine(pos[0],pos[1]-(0==i%intervalItemCount?10:0),pos[0],pos[1]+10,ringPaint);
+            canvas.restore();
+        }
+    }
+
+    private void drawLevelItems(Canvas canvas, int width, int height) {
+        float halfLength;
+        if(levelMinValue!=levelMaxValue&&levelMaxValue-levelMinValue>itemCount) {
+            halfLength = textPathMeasure.getLength() / 2;
+            textPaint.setTextSize(levelTextSize);
+            int itemValue = (levelMaxValue - levelMinValue) / (itemCount-1);
+            for (int i = 0; i < itemCount; i++) {
+                String text = String.valueOf(levelMinValue+i * itemValue);
+                float textWidth = textPaint.measureText(text, 0, text.length());
+                textPathMeasure.getPosTan(textWidth / 2, pos, tan);
+                float degrees = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
+                textPaint.getTextBounds(text.toString(), 0, text.length(), textRect);
+                canvas.save();
+                canvas.rotate(270 - degrees, width / 2, height - dialBottomPadding);
+                canvas.drawTextOnPath(text.toString(), textPath, i * (halfLength / (itemCount - 1)), textRect.height(), textPaint);
+                canvas.restore();
+            }
+        }
+    }
+
+    private void drawLevelText(Canvas canvas, int width, int height, float radius) {
+        if(null!=levelTextItems&&levelTextItems.length==itemCount){
+            int itemPosition = getItemPosition();
+            CharSequence text = levelTextItems[itemPosition];
+            if(!TextUtils.isEmpty(text)){
+                textPaint.setTextSize(levelInfoTextSize);
+                float textWidth = textPaint.measureText(text, 0, text.length());
+                canvas.drawText(text.toString(),(width-textWidth)/2,-(textPaint.descent()+ textPaint.ascent())+(height-radius)+radius/2,textPaint);
+            }
+        }
+    }
+
+    private void drawLevelTextValue(Canvas canvas, int width, int height) {
+        String value=String.valueOf(currentLevelValue);
+        textPaint.setTextSize(levelValueTextSize);
+        float textWidth = textPaint.measureText(value, 0, value.length());
+        textPaint.getTextBounds(value, 0, value.length(),textRect);
+        canvas.drawText(value,(width-textWidth)/2,(height-textPaint.descent()- textPaint.ascent())-textRect.height()- dialBottomPadding,textPaint);
+    }
+
+    private int getItemPosition(){
+        int itemValue = (levelMaxValue - levelMinValue)/(itemCount-1);
+        return (currentLevelValue-levelMinValue)/itemValue;
+    }
+
 
 }

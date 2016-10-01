@@ -21,15 +21,27 @@
         auto:dv_innerStrokeWidth2="2dp"
         auto:dv_dialBottomPadding="12dp"
         auto:dv_dialItemCount="7"
-        auto:dv_dialLevelText="信用良好"
+        auto:dv_dialLevelTextArray="@array/credit_level"
         auto:dv_minLevelValue="500"
         auto:dv_maxLevelValue="1100"
         />
 
-    <com.cz.app.widget.SeekLayout
-        android:id="@+id/sl_layout"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        auto:sl_info="@string/progress_value"
-        />
+        android:layout_gravity="right"
+        android:layout_marginTop="8dp"
+        android:text="@string/start"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="12sp"
+            android:textColor="@color/white"/>
+    </ScrollView>
 </LinearLayout>

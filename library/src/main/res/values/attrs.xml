@@ -495,7 +495,7 @@
         <attr name="dv_dialItemCount" format="integer"/>
         <attr name="dv_dialIntervalItemCount" format="integer"/>
         <attr name="dv_dialBottomPadding" format="dimension"/>
-        <attr name="dv_dialLevelText" format="string" />
+        <attr name="dv_dialLevelTextArray" format="reference" />
         <attr name="dv_levelTextSize" format="dimension"/>
         <attr name="dv_levelInfoTextSize" format="dimension"/>
         <attr name="dv_levelValueTextSize" format="dimension"/>
