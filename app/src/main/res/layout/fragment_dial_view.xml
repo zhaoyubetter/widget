@@ -6,14 +6,22 @@
     android:background="@color/colorPrimary"
     android:clipChildren="true">
 
+    <com.cz.app.widget.GradientRelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+
     <com.cz.library.widget.DialView
         android:id="@+id/dv_view"
         android:layout_width="280dp"
         android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
-        android:background="@color/colorPrimaryDark"
         auto:dv_strokeWidth="0.8dp"
         auto:dv_dialPadding="12dp"
+        android:layout_centerInParent="true"
         auto:dv_dialInnerPadding1="12dp"
         auto:dv_dialInnerPadding2="20dp"
         auto:dv_dialProgressDrawable="@drawable/flag"
@@ -26,6 +34,7 @@
         auto:dv_levelValue="@array/credit_level_value"
         />
 
+    </com.cz.app.widget.GradientRelativeLayout>
     <Button
         android:id="@+id/btn_start"
         android:layout_width="wrap_content"
