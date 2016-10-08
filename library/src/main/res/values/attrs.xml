@@ -499,8 +499,7 @@
         <attr name="dv_levelTextSize" format="dimension"/>
         <attr name="dv_levelInfoTextSize" format="dimension"/>
         <attr name="dv_levelValueTextSize" format="dimension"/>
-        <attr name="dv_minLevelValue" format="integer"/>
-        <attr name="dv_maxLevelValue" format="integer"/>
+        <attr name="dv_levelValue" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="CardTextView">

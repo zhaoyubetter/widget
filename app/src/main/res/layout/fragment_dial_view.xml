@@ -20,10 +20,9 @@
         auto:dv_innerStrokeWidth1="4dp"
         auto:dv_innerStrokeWidth2="2dp"
         auto:dv_dialBottomPadding="12dp"
-        auto:dv_dialItemCount="7"
+        auto:dv_dialItemCount="5"
         auto:dv_dialLevelTextArray="@array/credit_level"
-        auto:dv_minLevelValue="500"
-        auto:dv_maxLevelValue="1100"
+        auto:dv_levelValue="@array/credit_level_value"
         />
 
     <Button

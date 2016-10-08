@@ -19,10 +19,6 @@ import android.view.View;
 
 import com.cz.library.R;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by czz on 2016/9/26.
  */
@@ -53,10 +49,11 @@ public class DialView extends View{
     private int levelInfoTextSize;
     private int levelValueTextSize;
     private CharSequence[] levelTextItems;
-    private int currentLevelValue;
-    private float currentLevelDegrees;
+    private int[] levelValueArray;
     private int levelMinValue;
     private int levelMaxValue;
+    private int currentLevelValue;
+    private float currentLevelDegrees;
     private int itemIntervalDegrees;
     private int itemCount;
 
@@ -82,22 +79,24 @@ public class DialView extends View{
         tan=new float[2];
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DialView);
-        setDialItemCount(a.getInteger(R.styleable.DialView_dv_dialItemCount,5));
-        setStrokeWidth(a.getDimension(R.styleable.DialView_dv_strokeWidth,0));
-        setInnerStrokeWidth1(a.getDimension(R.styleable.DialView_dv_innerStrokeWidth1,0));
-        setInnerStrokeWidth2(a.getDimension(R.styleable.DialView_dv_innerStrokeWidth2,0));
+        setDialItemCount(a.getInteger(R.styleable.DialView_dv_dialItemCount, 5));
+        setStrokeWidth(a.getDimension(R.styleable.DialView_dv_strokeWidth, 0));
+        setInnerStrokeWidth1(a.getDimension(R.styleable.DialView_dv_innerStrokeWidth1, 0));
+        setInnerStrokeWidth2(a.getDimension(R.styleable.DialView_dv_innerStrokeWidth2, 0));
         setPaintColor(a.getColor(R.styleable.DialView_dv_paintColor, Color.WHITE));
-        setDialPadding(a.getDimension(R.styleable.DialView_dv_dialPadding,0));
+        setDialPadding(a.getDimension(R.styleable.DialView_dv_dialPadding, 0));
         setDialProgressDrawable(a.getDrawable(R.styleable.DialView_dv_dialProgressDrawable));
-        setDialInnerPadding1(a.getDimension(R.styleable.DialView_dv_dialInnerPadding1,0));
-        setDialInnerPadding2(a.getDimension(R.styleable.DialView_dv_dialInnerPadding2,0));
-        setDialItemIntervalDegrees(a.getInteger(R.styleable.DialView_dv_dialItemIntervalDegrees,2));
-        setDialIntervalItemCount(a.getInteger(R.styleable.DialView_dv_dialIntervalItemCount,7));
-        setDialBottomPadding(a.getDimension(R.styleable.DialView_dv_dialBottomPadding,0));
+        setDialInnerPadding1(a.getDimension(R.styleable.DialView_dv_dialInnerPadding1, 0));
+        setDialInnerPadding2(a.getDimension(R.styleable.DialView_dv_dialInnerPadding2, 0));
+        setDialItemIntervalDegrees(a.getInteger(R.styleable.DialView_dv_dialItemIntervalDegrees, 2));
+        setDialIntervalItemCount(a.getInteger(R.styleable.DialView_dv_dialIntervalItemCount, 7));
+        setDialBottomPadding(a.getDimension(R.styleable.DialView_dv_dialBottomPadding, 0));
 
         setLevelTextArray(a.getTextArray(R.styleable.DialView_dv_dialLevelTextArray));
-        setMinLevelValue(a.getInteger(R.styleable.DialView_dv_minLevelValue,0));
-        setMaxLevelValue(a.getInteger(R.styleable.DialView_dv_maxLevelValue,100));
+        int resId = a.getResourceId(R.styleable.DialView_dv_levelValue, NO_ID);
+        if(NO_ID!=resId){
+            setLevelValue(getResources().getIntArray(resId));
+        }
         setLevelTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,8)));
         setLevelInfoTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelInfoTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,16)));
         setLevelValueTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelValueTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,28)));
@@ -191,23 +190,25 @@ public class DialView extends View{
         }
     }
 
-    public void setMinLevelValue(int minValue) {
-        this.levelMinValue=minValue;
-        this.currentLevelValue=minValue;
-        invalidate();
+    public void setLevelValue(int[] array) {
+        if(null==array||array.length!=itemCount){
+            throw new IllegalArgumentException("items's height must be the same as item count!");
+        } else {
+            this.levelValueArray=array;
+            this.currentLevelValue=array[0];
+            this.levelMinValue=array[0];
+            this.levelMaxValue=array[array.length-1];
+            invalidate();
+        }
     }
 
-    public void setMaxLevelValue(int maxValue) {
-        this.levelMaxValue=maxValue;
-        invalidate();
-    }
 
     public int getMinLevelValue(){
-        return this.levelMinValue;
+        return levelMinValue;
     }
 
     public int getMaxLevelValue(){
-        return this.levelMaxValue;
+        return levelMaxValue;
     }
 
     public int getCurrentLevelValue(){
@@ -301,7 +302,7 @@ public class DialView extends View{
         int itemDegrees=(180-itemIntervalDegrees*(itemCount-1))/(itemCount-1);
         ringPaint.setStrokeWidth(innerStrokeWidth1);
         for(int i=0;i<itemCount-1;i++){
-            canvas.drawArc(arcRect,startDegrees,itemDegrees,false,ringPaint);
+            canvas.drawArc(arcRect, startDegrees, itemDegrees, false, ringPaint);
             startDegrees+=itemDegrees+itemIntervalDegrees;
         }
     }
@@ -316,7 +317,7 @@ public class DialView extends View{
             canvas.save();
             canvas.rotate(degrees,pos[0],pos[1]);
             canvas.translate(0 ,dialInnerPadding1+dialInnerPadding2+strokeWidth/2);
-            canvas.drawLine(pos[0],pos[1]-(0==i%intervalItemCount?10:0),pos[0],pos[1]+10,ringPaint);
+            canvas.drawLine(pos[0], pos[1] - (0 == i % intervalItemCount ? 10 : 0), pos[0], pos[1] + 10, ringPaint);
             canvas.restore();
         }
     }
@@ -326,9 +327,8 @@ public class DialView extends View{
         if(levelMinValue!=levelMaxValue&&levelMaxValue-levelMinValue>itemCount) {
             halfLength = textPathMeasure.getLength() / 2;
             textPaint.setTextSize(levelTextSize);
-            int itemValue = (levelMaxValue - levelMinValue) / (itemCount-1);
             for (int i = 0; i < itemCount; i++) {
-                String text = String.valueOf(levelMinValue+i * itemValue);
+                String text = String.valueOf(levelValueArray[i]);
                 float textWidth = textPaint.measureText(text, 0, text.length());
                 textPathMeasure.getPosTan(textWidth / 2, pos, tan);
                 float degrees = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
@@ -343,7 +343,7 @@ public class DialView extends View{
 
     private void drawLevelText(Canvas canvas, int width, int height, float radius) {
         if(null!=levelTextItems&&levelTextItems.length==itemCount){
-            int itemPosition = getItemPosition();
+            int itemPosition = getItemPosition(currentLevelValue);
             CharSequence text = levelTextItems[itemPosition];
             if(!TextUtils.isEmpty(text)){
                 textPaint.setTextSize(levelInfoTextSize);
@@ -360,10 +360,26 @@ public class DialView extends View{
         textPaint.getTextBounds(value, 0, value.length(),textRect);
         canvas.drawText(value,(width-textWidth)/2,(height-textPaint.descent()- textPaint.ascent())-textRect.height()- dialBottomPadding,textPaint);
     }
-
-    private int getItemPosition(){
-        int itemValue = (levelMaxValue - levelMinValue)/(itemCount-1);
-        return (currentLevelValue-levelMinValue)/itemValue;
+    /**
+     * 使用二分查找法,根据firstVisiblePosition找到SelectPositions中的位置
+     *
+     * @return
+     */
+    private int getItemPosition(int currentValue){
+        int[] positions = levelValueArray;
+        int start = 0, end = positions.length - 1, result = -1;
+        while (start <= end) {
+            int middle = (start + end) / 2;
+            if (currentValue == positions[middle]) {
+                result = middle + 1;
+                break;
+            } else if (currentValue < positions[middle]) {
+                end = middle - 1;
+            } else {
+                start = middle + 1;
+            }
+        }
+        return -1==result?start:result;
     }
 
 

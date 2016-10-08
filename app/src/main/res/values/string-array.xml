@@ -215,14 +215,20 @@
         <item>右</item>
     </string-array>
 
+    <integer-array name="credit_level_value">
+        <item>500</item>
+        <item>600</item>
+        <item>700</item>
+        <item>800</item>
+        <item>1000</item>
+    </integer-array>
+
     <string-array name="credit_level">
         <item>信用一般</item>
         <item>信用稍好</item>
         <item>信用尚可</item>
         <item>信用良好</item>
         <item>信用优秀</item>
-        <item>信用特别好</item>
-        <item>信用最好</item>
     </string-array>
 
 </resources>
