@@ -7,11 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.cz.app.R;
-import com.cz.app.widget.SeekLayout;
 import com.cz.library.widget.DialView;
 
 import java.util.Random;
@@ -32,6 +30,12 @@ public class DialViewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final DialView dialView= (DialView) view.findViewById(R.id.dv_view);
         final TextView textView= (TextView) view.findViewById(R.id.tv_text);
+        dialView.setOnLevelValueChangeListener(new DialView.OnLevelValueChangeListener() {
+            @Override
+            public void onLevelValueChanged(int startValue, int currentValue, int endValue, int level, float fraction) {
+                Log.e(TAG,"level:"+level+" fraction:"+fraction);
+            }
+        });
         view.findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -21,6 +21,7 @@
         auto:dv_innerStrokeWidth2="2dp"
         auto:dv_dialBottomPadding="12dp"
         auto:dv_dialItemCount="5"
+        auto:dv_levelAnimDuration="2000"
         auto:dv_dialLevelTextArray="@array/credit_level"
         auto:dv_levelValue="@array/credit_level_value"
         />

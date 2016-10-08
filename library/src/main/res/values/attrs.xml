@@ -499,6 +499,7 @@
         <attr name="dv_levelTextSize" format="dimension"/>
         <attr name="dv_levelInfoTextSize" format="dimension"/>
         <attr name="dv_levelValueTextSize" format="dimension"/>
+        <attr name="dv_levelAnimDuration" format="integer"/>
         <attr name="dv_levelValue" format="reference"/>
     </declare-styleable>
 

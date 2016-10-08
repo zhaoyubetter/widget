@@ -55,7 +55,9 @@ public class DialView extends View{
     private int currentLevelValue;
     private float currentLevelDegrees;
     private int itemIntervalDegrees;
+    private int animDuration;
     private int itemCount;
+    private OnLevelValueChangeListener listener;
 
 
     public DialView(Context context) {
@@ -98,8 +100,9 @@ public class DialView extends View{
             setLevelValue(getResources().getIntArray(resId));
         }
         setLevelTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,8)));
-        setLevelInfoTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelInfoTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,16)));
-        setLevelValueTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelValueTextSize,applyDimension(TypedValue.COMPLEX_UNIT_SP,28)));
+        setLevelInfoTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelInfoTextSize, applyDimension(TypedValue.COMPLEX_UNIT_SP, 16)));
+        setLevelValueTextSize(a.getDimensionPixelSize(R.styleable.DialView_dv_levelValueTextSize, applyDimension(TypedValue.COMPLEX_UNIT_SP, 28)));
+        setLevelAnimDuration(a.getInteger(R.styleable.DialView_dv_levelAnimDuration,300));
         a.recycle();
     }
 
@@ -190,6 +193,11 @@ public class DialView extends View{
         }
     }
 
+    public void setLevelAnimDuration(int duration) {
+        this.animDuration=duration;
+    }
+
+
     public void setLevelValue(int[] array) {
         if(null==array||array.length!=itemCount){
             throw new IllegalArgumentException("items's height must be the same as item count!");
@@ -234,23 +242,34 @@ public class DialView extends View{
 
     }
 
-    public void setLevelValueTo(final int value){
+    public void setLevelValueTo(final int endValue){
         //current value->value
-        if(levelMinValue<=value&&levelMaxValue>=value){
-            ValueAnimator valueAnimator = ValueAnimator.ofInt(currentLevelValue, value);
+        if(levelMinValue<=endValue&&levelMaxValue>=endValue){
+            final int startValue=currentLevelValue;
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(startValue, endValue);
+            valueAnimator.setDuration(animDuration);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
                     Integer value = Integer.valueOf(valueAnimator.getAnimatedValue().toString());
-                    currentLevelDegrees=(value-levelMinValue)*1.0f/(levelMaxValue-levelMinValue)*180;
-                    Log.e(TAG,"value:"+value+" max:"+levelMaxValue+" degrees:"+currentLevelDegrees);
+                    int itemPosition = getItemPosition(value)-1;
+                    int itemDegrees = 180 / (itemCount - 1);
+                    int startValue = levelValueArray[itemPosition];
+                    int itemValue=levelValueArray[itemPosition+1]-startValue;
+                    float fraction=(value-startValue)*1.0f/itemValue;
+                    currentLevelDegrees=itemPosition*itemDegrees+fraction*itemDegrees;
                     currentLevelValue=value;
+                    if(null!=listener){
+                        listener.onLevelValueChanged(startValue, value, endValue,itemPosition,fraction);
+                    }
                     invalidate();
                 }
             });
             valueAnimator.start();
         }
     }
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -278,9 +297,9 @@ public class DialView extends View{
             canvas.drawLine(0,height-radius,width,height-radius,paint);
             canvas.drawLine(width/2,0,width/2,height,paint);
             canvas.drawLine(0,height-dialBottomPadding,width,height-dialBottomPadding,paint);
+            Log.e(TAG,"time:"+(System.currentTimeMillis()-st));
         }
 
-        Log.e(TAG,"time:"+(System.currentTimeMillis()-st));
     }
 
     private void drawIndicatorDrawable(Canvas canvas, float halfLength) {
@@ -380,6 +399,13 @@ public class DialView extends View{
             }
         }
         return -1==result?start:result;
+    }
+
+    public void setOnLevelValueChangeListener(OnLevelValueChangeListener listener){
+        this.listener=listener;
+    }
+    public interface OnLevelValueChangeListener{
+        void onLevelValueChanged(int startValue,int currentValue,int endValue,int level,float fraction);
     }
 
 
