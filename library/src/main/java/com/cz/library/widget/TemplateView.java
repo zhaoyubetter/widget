@@ -137,20 +137,30 @@ public class TemplateView extends RelativeLayout {
             if (null != frameAction) {
                 removeCallbacks(frameAction);
             }
-            postDelayed(frameAction=new Runnable() {
-                @Override
-                public void run() {
-                    View showView = getChildAt(frame);
-                    View closeView = getChildAt(lastFrame);
-                    closeView.setVisibility(View.GONE);//隐藏
-                    showView.setVisibility(View.VISIBLE);
-                    if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
-                        ViewCompat.setAlpha(showView, 0f);
-                        ViewCompat.animate(showView).alpha(1f);
+            final int lastFrame=this.lastFrame;
+            this.lastFrame = frame;
+            if(0>=delayTime){
+                showFrame(frame, lastFrame, animate);
+            } else {
+                postDelayed(frameAction=new Runnable() {
+                    @Override
+                    public void run() {
+                        showFrame(frame, lastFrame, animate);
                     }
-                    lastFrame = frame;
-                }
-            },delayTime);
+                },delayTime);
+            }
+
+        }
+    }
+
+    public void showFrame(int frame, int lastFrame, boolean animate) {
+        View showView = getChildAt(frame);
+        View closeView = getChildAt(lastFrame);
+        closeView.setVisibility(View.GONE);//隐藏
+        showView.setVisibility(View.VISIBLE);
+        if (Build.VERSION_CODES.HONEYCOMB < Build.VERSION.SDK_INT && animate) {
+            ViewCompat.setAlpha(showView, 0f);
+            ViewCompat.animate(showView).alpha(1f);
         }
     }
 
