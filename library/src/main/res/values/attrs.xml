@@ -458,18 +458,62 @@
         <attr name="sv_editDeleteDrawable" format="reference"/>
         <attr name="sv_editPadding" format="dimension" />
         <attr name="sv_editError" format="string"/>
+        <attr name="sv_editEmptyError" format="string"/>
         <attr name="sv_validatorValue" format="string"/>
+        <attr name="sv_patternValidator" format="string"/>
         <attr name="sv_validator" >
             <flag name="not_empty" value="0x01"/>
             <flag name="length" value="0x02"/>
             <flag name="range" value="0x04"/>
+            <flag name="character" value="0x08"/>
+            <flag name="email" value="0x10"/>
+            <flag name="number" value="0x20"/>
+            <flag name="phone" value="0x40"/>
+            <flag name="web_url" value="0x80"/>
+            <flag name="id" value="0x100"/>
         </attr>
-        <attr name="sv_patternValidator" format="enum|string">
-            <enum name="character" value="0x01"/>
-            <enum name="email" value="0x02"/>
-            <enum name="number" value="0x03"/>
-            <enum name="phone" value="0x04"/>
-            <enum name="web_url" value="0x05"/>
+        <attr name="sv_editInputType">
+            <enum name="number" value="0x01"/>
+            <enum name="text" value="0x02"/>
+            <enum name="number_password" value="0x03"/>
+            <enum name="text_password" value="0x04"/>
+        </attr>
+        <attr name="sv_editMaxLength" format="integer"/>
+        <attr name="sv_editMaxLine" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="DialView">
+        <attr name="dv_paintColor" format="color"/>
+        <attr name="dv_strokeWidth" format="dimension"/>
+        <attr name="dv_innerStrokeWidth1" format="dimension"/>
+        <attr name="dv_innerStrokeWidth2" format="dimension"/>
+        <attr name="dv_dialPadding" format="dimension"/>
+        <attr name="dv_dialInnerPadding1" format="dimension"/>
+        <attr name="dv_dialInnerPadding2" format="dimension"/>
+        <attr name="dv_dialProgressDrawable" format="reference"/>
+        <attr name="dv_dialItemIntervalDegrees" format="integer"/>
+        <attr name="dv_dialItemCount" format="integer"/>
+        <attr name="dv_dialIntervalItemCount" format="integer"/>
+        <attr name="dv_dialBottomPadding" format="dimension"/>
+        <attr name="dv_dialLevelTextArray" format="reference" />
+        <attr name="dv_levelTextSize" format="dimension"/>
+        <attr name="dv_levelInfoTextSize" format="dimension"/>
+        <attr name="dv_levelValueTextSize" format="dimension"/>
+        <attr name="dv_levelAnimDuration" format="integer"/>
+        <attr name="dv_levelValue" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="CardTextView">
+        <attr name="cv_contentLeftPadding" format="dimension"/>
+        <attr name="cv_contentTopPadding" format="dimension"/>
+        <attr name="cv_contentRightPadding" format="dimension"/>
+        <attr name="cv_contentBottomPadding" format="dimension"/>
+        <attr name="cv_cardBackgroundColor" format="dimension"/>
+        <attr name="cv_cardCornerRadius" format="dimension"/>
+        <attr name="cv_cardElevation" format="dimension"/>
+        <attr name="cv_cardType" format="enum">
+            <enum name="rect" value="0x00"/>
+            <enum name="oval" value="0x01"/>
         </attr>
     </declare-styleable>
 
